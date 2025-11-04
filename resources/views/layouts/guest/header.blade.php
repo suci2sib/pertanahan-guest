@@ -1,24 +1,24 @@
-<div class="container-fluid border-bottom bg-light wow fadeIn" data-wow-delay="0.1s">
-    <div class="container px-0">
-        <nav class="navbar navbar-light navbar-expand-xl py-3">
-            <a href="index.html" class="navbar-brand">
-                <h1 class="text-primary display-6">Pertanahan</h1>
-            </a>
-            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars text-primary"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="{{ route('persil.index') }}" class="nav-item nav-link active">Home</a>
-                    <a href="{{ route('users.index') }}" class="nav-item nav-link active">User</a>
-                    <a href="{{ route('guest.about') }}" class="nav-item nav-link">Tentang</a>
-                    <a href="{{ route('guest.services') }}" class="nav-item nav-link">Layanan</a>
-                    <a href="{{ route('guest.contact') }}" class="nav-item nav-link">Kontak</a>
+<header class="header navbar-area">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="#home">
+                    <img src="{{ asset('assets/assets-guest/images/logo/white-logo.svg') }}" alt="Logo">
+                </a>
+                <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="toggler-icon"></span>
+                    <span class="toggler-icon"></span>
+                    <span class="toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                    <ul id="nav" class="navbar-nav ms-auto">
+                        <li class="nav-item"><a href="#home" class="page-scroll active">Home</a></li>
+                        <li class="nav-item"><a href="#about" class="page-scroll">Tentang</a></li>
+                        <li class="nav-item"><a href="#layanan" class="page-scroll">Layanan</a></li>
+                        <li class="nav-item"><a href="#kontak" class="page-scroll">Kontak</a></li>
+                    </ul>
                 </div>
-            </div>
-    </div>
-</div>
-</nav>
-</div>
-</div>
+            </nav>
+        </div>
+    </header>

@@ -1,40 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-    <meta charset="utf-8">
-    <title>Sistem Pertanahan</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Bina Desa - Sistem Informasi Pertanahan</title>
+    <meta name="description" content="Sistem Informasi Pertanahan Desa" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Start CSS -->
     @include('layouts.guest.css')
 </head>
 
 <body>
-
-    <!-- Spinner Start -->
-    <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-grow text-primary" role="status"></div>
-    </div>
-    <!-- Spinner End -->
-
-    <!-- Navbar Start -->
+    <!-- Header -->
     @include('layouts.guest.header')
-    <!-- Navbar End -->
+    <!-- End Header -->
 
-    <!-- Main Content Start -->
+    <!-- Main Content -->
     @yield('content')
-    <!-- Main Content End -->
-
-    <!-- Footer Start -->
+    <!-- Footer -->
     @include('layouts.guest.footer')
-    <!-- Footer End -->
 
-    <!-- JavaScript -->
+    <!-- ========================= JS ========================= -->
     @include('layouts.guest.js')
-
 </body>
 
 </html>
