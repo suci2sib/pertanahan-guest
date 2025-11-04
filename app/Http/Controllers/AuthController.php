@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -12,7 +11,7 @@ class AuthController extends Controller
      */
     public function index()
     {
-         return view('guest.auth.login'); // arahkan ke view resources/views/auth/login.blade.php
+        return view('pages.auth.login'); // arahkan ke view resources/views/auth/login.blade.php
     }
 
     // Proses login
@@ -25,14 +24,14 @@ class AuthController extends Controller
         ], [
             'username.required' => 'Username wajib diisi.',
             'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal 3 karakter.',
+            'password.min'      => 'Password minimal 3 karakter.',
         ]);
 
         $username = $request->input('username');
         $password = $request->input('password');
 
         // Cek password mengandung huruf kapital
-        if (!preg_match('/[A-Z]/', $password)) {
+        if (! preg_match('/[A-Z]/', $password)) {
             return redirect('/auth')
                 ->withInput()
                 ->with('error', 'Password harus mengandung minimal satu huruf kapital.');
@@ -56,7 +55,6 @@ class AuthController extends Controller
                 ->with('error', 'Username atau password salah.');
         }
     }
-
 
     /**
      * Show the form for creating a new resource.
