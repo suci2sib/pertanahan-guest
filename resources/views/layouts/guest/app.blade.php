@@ -7,7 +7,6 @@
     <title>Bina Desa - Sistem Informasi Pertanahan</title>
     <meta name="description" content="Sistem Informasi Pertanahan Desa" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     @include('layouts.guest.css')
 </head>
 
@@ -15,14 +14,12 @@
     <!-- Header -->
     @include('layouts.guest.header')
     <!-- End Header -->
-
     <!-- Main Content -->
     @yield('content')
     <!-- Footer -->
     @include('layouts.guest.footer')
-
+</body>
     <!-- ========================= JS ========================= -->
     @include('layouts.guest.js')
-</body>
 
 </html>

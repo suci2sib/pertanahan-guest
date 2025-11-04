@@ -1649,7 +1649,7 @@ ol {
 }
 
 .header.sticky .button .btn {
-  background-color: #ff6b81;
+  background-color: #e90023;
   color: #fff;
   border-color: transparent;
 }
@@ -1662,7 +1662,7 @@ ol {
 .sticky {
   position: fixed;
   z-index: 99;
-  background-color: #fff;
+  background-color: #8d0000;
   -webkit-box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.05);
           box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.05);
   -webkit-transition: all 0.3s ease-out 0s;
@@ -1677,7 +1677,7 @@ ol {
 }
 
 .header .navbar .navbar-nav .nav-item a.active {
-  color: #fff;
+  color: #c90000;
 }
 
 .sticky .navbar .navbar-nav .nav-item a.active {
@@ -1705,7 +1705,6 @@ ol {
   width: 100%;
   z-index: 99;
   -webkit-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
   padding: 0;
 }
 
@@ -1724,8 +1723,7 @@ ol {
 .navbar {
   padding: 0;
   position: relative;
-  -webkit-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
+  background: #ff6b81;
 }
 
 .navbar-brand {
@@ -2950,4 +2948,49 @@ ol {
 .footer .footer-newsletter .newsletter-form .button .btn:hover {
   color: #ff6b81;
   background-color: #fff;
+}
+/* === Navbar fixed dan rapi === */
+.navbar-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: #ff6b81; /* warna utama */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Logo dan menu sejajar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* logo kiri, menu kanan */
+  padding: 0 2rem;
+  min-height: 80px;
+  width: 100%;
+  background: transparent; /* biar pakai warna parent */
+  position: relative; /* jangan fixed di sini */
+}
+
+/* Menu ke kanan */
+.navbar-expand-lg .navbar-nav {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+/* Warna font dan hover */
+.navbar-nav .nav-item a {
+  color: #fff !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-item a:hover,
+.navbar-nav .nav-item a.active {
+  color: #081828 !important;
+}
+
+/* Tambah padding top di body agar konten tidak tertutup navbar */
+body {
+  padding-top: 80px; /* tinggi navbar */
 }

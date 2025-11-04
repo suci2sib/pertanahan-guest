@@ -94,20 +94,23 @@
                 </div>
                 <!-- Card 2 -->
                 <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-table wow fadeInUp" data-wow-delay=".4s">
-                        <div class="table-head">
-                            <h4 class="title">Layanan Warga</h4>
-                            <p>Fasilitasi warga dalam pengurusan dan verifikasi data kepemilikan tanah.</p>
+                    <a href="{{ route('warga.index') }}" class="text-decoration-none text-dark">
+                        <div class="single-table wow fadeInUp hover-shadow" data-wow-delay=".4s" style="cursor: pointer;">
+                            <div class="table-head">
+                                <h4 class="title">Layanan Warga</h4>
+                                <p>Fasilitasi warga dalam pengurusan dan verifikasi data kepemilikan tanah.</p>
+                            </div>
+                            <div class="table-content">
+                                <ul class="table-list">
+                                    <li><i class="lni lni-checkmark-circle"></i> Pengajuan sertifikat tanah</li>
+                                    <li><i class="lni lni-checkmark-circle"></i> Konsultasi status lahan</li>
+                                    <li><i class="lni lni-checkmark-circle"></i> Pelaporan konflik pertanahan</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="table-content">
-                            <ul class="table-list">
-                                <li><i class="lni lni-checkmark-circle"></i> Pengajuan sertifikat tanah</li>
-                                <li><i class="lni lni-checkmark-circle"></i> Konsultasi status lahan</li>
-                                <li><i class="lni lni-checkmark-circle"></i> Pelaporan konflik pertanahan</li>
-                            </ul>
-                        </div>
-                    </div>
+                    </a>
                 </div>
+
                 <!-- Card 3 -->
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="single-table wow fadeInUp" data-wow-delay=".6s">
