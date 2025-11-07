@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistem Pertanahan Desa</title>
+    <title>Register - Sistem Pertanahan Desa</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -17,7 +17,7 @@
         /* Kiri */
         .login-left {
             flex: 1;
-            background: #ff63a4;
+            background: #ff63e5;
             color: white;
             display: flex;
             align-items: center;
@@ -30,11 +30,13 @@
             font-size: 28px;
             font-weight: 600;
             margin-bottom: 10px;
+            text-align: center;
         }
 
         .login-left p {
             font-size: 15px;
             opacity: 0.9;
+            text-align: center;
         }
 
         /* Kanan */
@@ -77,27 +79,12 @@
             margin-top: 20px;
         }
 
-        .form-group label {
-            font-size: 14px;
-            font-weight: 500;
-            display: block;
-            margin-bottom: 5px;
-        }
-
         .form-group input {
             width: 100%;
             padding: 10px 12px;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 14px;
-        }
-
-        .remember {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            font-size: 13px;
         }
 
         .btn-login {
@@ -117,34 +104,6 @@
             background-color: #574bff;
         }
 
-        .social-login {
-            text-align: center;
-            margin-top: 25px;
-        }
-
-        .social-login span {
-            display: block;
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .social-login a {
-            display: inline-block;
-            margin: 0 8px;
-        }
-
-        .social-login img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            transition: transform 0.2s ease;
-        }
-
-        .social-login img:hover {
-            transform: scale(1.1);
-        }
-
         @media(max-width: 900px) {
             body {
                 flex-direction: column;
@@ -160,16 +119,17 @@
 
 <body>
     <div class="login-left">
-        <h1>LEARN TO CODE<br>WITH US.</h1>
-        <p>Learn to code • Gain a new skill • Get a new job</p>
+        <h1>BUAT AKUN BARU</h1>
+        <p>Bergabung dengan Sistem Pertanahan Desa<br>dan mulai kelola data Anda sekarang.</p>
     </div>
 
     <div class="login-right">
         <div class="login-box">
-            <h2>Login</h2>
-            <p>Don’t have an account? <a href="{{ route('auth.create') }}">Create your account</a></p>
+            <h2>Register</h2>
+            <p>Sudah punya akun? <a href="{{ route('auth.index') }}">Login sekarang</a></p>
 
-             @if ($errors->any())
+            {{-- Notifikasi Error --}}
+            @if ($errors->any())
                 <div style="background:#ffe2e2; border:1px solid #ffb3b3; color:#b30000; padding:10px; border-radius:6px; margin-top:15px;">
                     <strong>Perhatian!</strong>
                     <ul style="margin: 8px 0 0 18px;">
@@ -179,32 +139,26 @@
                     </ul>
                 </div>
             @endif
+
             <form action="{{ route('auth.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <input type="email" name="email" class="form-control form-control-lg" id="email"
-                        placeholder="Email" value="{{ old('email') }}" required>
+                    <input type="text" name="name" placeholder="Nama Lengkap" value="{{ old('name') }}" required>
                 </div>
 
                 <div class="form-group">
-                    <input type="password" name="password" class="form-control form-control-lg" placeholder="Password"
-                        required>
+                    <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
                 </div>
 
-
-
-
-                <button type="submit" name="login" class="btn-login">Login</button>
-
-                <div class="social-login">
-                    <span>Or login with</span>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
-                            alt="Facebook"></a>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png"
-                            alt="Twitter"></a>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/281/281764.png"
-                            alt="Google"></a>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" required>
                 </div>
+
+                <div class="form-group">
+                    <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" required>
+                </div>
+
+                <button type="submit" name="register" class="btn-login">Daftar Sekarang</button>
             </form>
         </div>
     </div>
