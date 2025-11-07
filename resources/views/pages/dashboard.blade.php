@@ -78,19 +78,21 @@
             <div class="row">
                 <!-- Card 1 -->
                 <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-table wow fadeInUp" data-wow-delay=".2s">
-                        <div class="table-head">
-                            <h4 class="title">Layanan User</h4>
-                            <p>Akses data dan peta pertanahan dengan mudah melalui sistem digital desa.</p>
+                    <a href="{{ route('user.index') }}" class="text-decoration-none text-dark">
+                        <div class="single-table wow fadeInUp hover-shadow" data-wow-delay=".2s" style="cursor: pointer;">
+                            <div class="table-head">
+                                <h4 class="title">Layanan User</h4>
+                                <p>Akses data dan peta pertanahan dengan mudah melalui sistem digital desa.</p>
+                            </div>
+                            <div class="table-content">
+                                <ul class="table-list">
+                                    <li><i class="lni lni-checkmark-circle"></i> Akses peta tanah desa</li>
+                                    <li><i class="lni lni-checkmark-circle"></i> Melihat batas wilayah</li>
+                                    <li><i class="lni lni-checkmark-circle"></i> Informasi kepemilikan tanah</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="table-content">
-                            <ul class="table-list">
-                                <li><i class="lni lni-checkmark-circle"></i> Akses peta tanah desa</li>
-                                <li><i class="lni lni-checkmark-circle"></i> Melihat batas wilayah</li>
-                                <li><i class="lni lni-checkmark-circle"></i> Informasi kepemilikan tanah</li>
-                            </ul>
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 <!-- Card 2 -->
                 <div class="col-lg-4 col-md-6 col-12">
@@ -113,19 +115,21 @@
 
                 <!-- Card 3 -->
                 <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-table wow fadeInUp" data-wow-delay=".6s">
-                        <div class="table-head">
-                            <h4 class="title">Jenis Penggunaan Tanah</h4>
-                            <p>Klasifikasi jenis penggunaan tanah untuk kebutuhan pembangunan desa.</p>
+                    <a href="{{ route('jenispenggunaan.index') }}" class="text-decoration-none text-dark">
+                        <div class="single-table wow fadeInUp hover-shadow" data-wow-delay=".6s" style="cursor: pointer;">
+                            <div class="table-head">
+                                <h4 class="title">Jenis Penggunaan Tanah</h4>
+                                <p>Klasifikasi jenis penggunaan tanah untuk kebutuhan pembangunan desa.</p>
+                            </div>
+                            <div class="table-content">
+                                <ul class="table-list">
+                                    <li><i class="lni lni-checkmark-circle"></i> Pertanian & perkebunan</li>
+                                    <li><i class="lni lni-checkmark-circle"></i> Pemukiman & fasilitas umum</li>
+                                    <li><i class="lni lni-checkmark-circle"></i> Kawasan industri & komersial</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="table-content">
-                            <ul class="table-list">
-                                <li><i class="lni lni-checkmark-circle"></i> Pertanian & perkebunan</li>
-                                <li><i class="lni lni-checkmark-circle"></i> Pemukiman & fasilitas umum</li>
-                                <li><i class="lni lni-checkmark-circle"></i> Kawasan industri & komersial</li>
-                            </ul>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

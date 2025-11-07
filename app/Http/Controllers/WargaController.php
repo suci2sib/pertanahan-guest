@@ -54,7 +54,7 @@ class WargaController extends Controller
  */
     public function edit(string $id)
     {
-        $data[dataWarga] = Warga::findOrFail($id);
+        $data['dataWarga'] = Warga::findOrFail($id);
         return view('pages.warga.edit', $data);
     }
 
@@ -63,7 +63,7 @@ class WargaController extends Controller
  */
     public function update(Request $request, string $id)
     {
-        $warga_id = id;
+        $warga_id = $id;
         $warga    = Warga::findOrFail($warga_id);
 
         $warga->no_ktp        = $request->no_ktp;
