@@ -11,7 +11,7 @@ class WargaController extends Controller
      */
     public function index(Request $request)
     {
-         $filterableColumns = ['jenis_kelamin'];
+        $filterableColumns = ['jenis_kelamin'];
         $searchableColumns = ['no_ktp','nama','telp','email'];
         $data['dataWarga'] = Warga::filter($request,$filterableColumns)
                                     ->search($request, $searchableColumns)

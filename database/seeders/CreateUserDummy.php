@@ -17,7 +17,7 @@ class CreateUserDummy extends Seeder
     {
         $faker = Factory::create();
 
-        foreach (range(1, 1000) as $index) {
+        foreach (range(1, 100) as $index) {
             DB::table('users')->insert([
                 'name'     => $faker->name,
                 'email'    => $faker->unique()->safeEmail,

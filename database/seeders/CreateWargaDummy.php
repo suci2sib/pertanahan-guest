@@ -14,7 +14,7 @@ class CreateWargaDummy extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             DB::table('warga')->insert([
                 'no_ktp'        => $faker->numerify('################'), // 16 digit angka acak
                 'nama'          => $faker->name(),
