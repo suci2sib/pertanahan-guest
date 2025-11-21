@@ -9,10 +9,12 @@ class JenisPenggunaanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-         $data['dataJenisPenggunaan'] = JenisPenggunaan::all();
-		return view('pages.jenispenggunaan.index',$data);
+        $searchableColumns = ['nama_penggunaan','keterangan'];
+        $data['dataJenisPenggunaan'] = JenisPenggunaan::search($request, $searchableColumns)->simplePaginate(9)
+                        ->onEachSide(2) ;
+        return view('pages.jenispenggunaan.index', $data);
     }
 
     /**
