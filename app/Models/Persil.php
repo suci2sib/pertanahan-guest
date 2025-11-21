@@ -18,4 +18,9 @@ class Persil extends Model
         'rt',
         'rw',
     ];
+
+    public function warga()
+    {
+        return $this->belongsTo(Warga::class, 'pemilik_warga_id', 'warga_id');
+    }
 }

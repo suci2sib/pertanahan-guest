@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
+use App\Http\Controllers\PersilController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisPenggunaanController;
 
@@ -20,3 +21,5 @@ Route::resource('warga', WargaController::class);
 Route::resource('dashboard', DashboardController::class);
 
 Route::resource('jenispenggunaan', JenisPenggunaanController::class);
+
+Route::resource('persil', PersilController::class);

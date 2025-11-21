@@ -131,6 +131,24 @@
                         </div>
                     </a>
                 </div>
+                <!-- Card 1 -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a href="{{ route('persil.index') }}" class="text-decoration-none text-dark">
+                        <div class="single-table wow fadeInUp hover-shadow" data-wow-delay=".2s" style="cursor: pointer;">
+                            <div class="table-head">
+                                <h4 class="title">Layanan Persil</h4>
+                                <p>Akses data dan peta pertanahan dengan mudah melalui sistem digital desa.</p>
+                            </div>
+                            <div class="table-content">
+                                <ul class="table-list">
+                                    <li><i class="lni lni-checkmark-circle"></i> Akses peta tanah desa</li>
+                                    <li><i class="lni lni-checkmark-circle"></i> Melihat batas wilayah</li>
+                                    <li><i class="lni lni-checkmark-circle"></i> Informasi kepemilikan tanah</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
