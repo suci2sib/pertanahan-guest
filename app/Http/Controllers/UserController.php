@@ -10,9 +10,11 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['dataUser'] = User::all();
+        $searchableColumns = ['name','email'];
+        $data['dataUser'] = User::search($request, $searchableColumns)->simplePaginate(9)
+                        ->onEachSide(2) ;
         return view('pages.user.index', $data);
     }
 

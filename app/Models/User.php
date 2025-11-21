@@ -45,4 +45,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function scopeSearch($query, $request, array $columns)
+{
+    if ($request->filled('search')) {
+        $query->where(function($q) use ($request, $columns) {
+            foreach ($columns as $column) {
+                $q->orWhere($column, 'LIKE', '%' . $request->search . '%');
+            }
+        });
+    }
+}
 }
