@@ -33,4 +33,10 @@ class Persil extends Model
             });
         }
     }
+    public function attachments()
+    {
+        return $this->hasMany(Media::class, 'ref_id', 'persil_id')
+                    ->where('ref_table', 'persil')
+                    ->orderBy('sort_order', 'asc');
+    }
 }

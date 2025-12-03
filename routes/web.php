@@ -21,5 +21,7 @@ Route::resource('warga', WargaController::class);
 Route::resource('dashboard', DashboardController::class);
 
 Route::resource('jenispenggunaan', JenisPenggunaanController::class);
-
+//ROUTE PERSIL
+Route::delete('/persil/media/{id}', [PersilController::class, 'deleteMedia'])->name('persil.deleteMedia');
 Route::resource('persil', PersilController::class);
+
