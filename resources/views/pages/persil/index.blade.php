@@ -51,12 +51,14 @@
                     @forelse ($dataPersil as $p)
                         <div class="col-lg-4 col-md-6 col-12 mb-4">
                             <div class="single-team wow fadeInUp shadow-sm h-100 bg-white position-relative"
-                                data-wow-delay=".2s" style="border-radius: 15px; overflow: hidden; border: 1px solid #f0f0f0;">
+                                data-wow-delay=".2s"
+                                style="border-radius: 15px; overflow: hidden; border: 1px solid #f0f0f0;">
 
                                 {{-- Indikator Lampiran (Badge) --}}
                                 @if ($p->attachments->count() > 0)
                                     <div class="position-absolute top-0 end-0 m-3">
-                                        <span class="badge bg-info text-white rounded-pill shadow-sm" title="Memiliki Lampiran">
+                                        <span class="badge bg-info text-white rounded-pill shadow-sm"
+                                            title="Memiliki Lampiran">
                                             <i class="lni lni-paperclip"></i> {{ $p->attachments->count() }} Berkas
                                         </span>
                                     </div>
@@ -92,25 +94,32 @@
 
                                     {{-- Action Buttons --}}
                                     <div class="mt-auto d-flex justify-content-center gap-2">
-                                        {{-- Tombol Detail (Trigger Modal) --}}
+
+                                        {{-- Tombol Detail (bisa dipakai semua role) --}}
                                         <button type="button" class="btn btn-outline-info btn-sm rounded-pill px-3"
                                             data-bs-toggle="modal" data-bs-target="#modalDetail-{{ $p->persil_id }}">
                                             <i class="lni lni-eye"></i> Detail
                                         </button>
 
-                                        <a href="{{ route('persil.edit', $p->persil_id) }}"
-                                            class="btn btn-outline-warning btn-sm rounded-pill px-3">
-                                            <i class="lni lni-pencil"></i> Edit
-                                        </a>
+                                        {{-- HANYA ADMIN yang bisa Edit & Hapus --}}
+                                        @if (Auth::check() && Auth::user()->role === 'Admin')
+                                            <a href="{{ route('persil.edit', $p->persil_id) }}"
+                                                class="btn btn-outline-warning btn-sm rounded-pill px-3">
+                                                <i class="lni lni-pencil"></i> Edit
+                                            </a>
 
-                                        <form action="{{ route('persil.destroy', $p->persil_id) }}" method="POST"
-                                            onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
-                                                <i class="lni lni-trash-can">Hapus</i>
-                                            </button>
-                                        </form>
+                                            <form action="{{ route('persil.destroy', $p->persil_id) }}" method="POST"
+                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                @csrf @method('DELETE')
+                                                <button type="submit"
+                                                    class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                                    <i class="lni lni-trash-can"></i> Hapus
+                                                </button>
+                                            </form>
+                                        @endif
+
                                     </div>
+
 
                                 </div>
                             </div>
@@ -126,14 +135,16 @@
                                         <h5 class="modal-title text-white">
                                             <i class="lni lni-map me-2"></i> Detail Persil: {{ $p->kode_persil }}
                                         </h5>
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                        <button type="button" class="btn-close btn-close-white"
+                                            data-bs-dismiss="modal"></button>
                                     </div>
                                     <div class="modal-body p-4 bg-light">
                                         <div class="row g-4">
                                             {{-- Kolom Kiri: Info Utama --}}
                                             <div class="col-md-6">
                                                 <div class="bg-white p-3 rounded shadow-sm h-100">
-                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary">Informasi Lahan</h6>
+                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary">Informasi Lahan
+                                                    </h6>
 
                                                     <table class="table table-borderless table-sm">
                                                         <tr>
@@ -154,7 +165,9 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="text-muted">Penggunaan</td>
-                                                            <td><span class="badge bg-secondary">{{ $p->penggunaan }}</span></td>
+                                                            <td><span
+                                                                    class="badge bg-secondary">{{ $p->penggunaan }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td class="text-muted">Alamat</td>
@@ -176,38 +189,46 @@
                                                     </h6>
 
                                                     @if ($p->attachments->count() > 0)
-                                                        <div class="d-flex flex-column gap-2" style="max-height: 300px; overflow-y: auto;">
+                                                        <div class="d-flex flex-column gap-2"
+                                                            style="max-height: 300px; overflow-y: auto;">
                                                             @foreach ($p->attachments as $file)
-                                                                <div class="d-flex align-items-center p-2 border rounded bg-light hover-shadow">
+                                                                <div
+                                                                    class="d-flex align-items-center p-2 border rounded bg-light hover-shadow">
                                                                     {{-- Ikon berdasarkan tipe file --}}
                                                                     <div class="me-3 text-center" style="width: 40px;">
                                                                         @if (str_contains($file->mime_type, 'image'))
                                                                             <i class="lni lni-image text-success fs-3"></i>
                                                                         @elseif(str_contains($file->mime_type, 'pdf'))
-                                                                            <i class="lni lni-empty-file text-danger fs-3"></i>
+                                                                            <i
+                                                                                class="lni lni-empty-file text-danger fs-3"></i>
                                                                         @else
-                                                                            <i class="lni lni-files text-secondary fs-3"></i>
+                                                                            <i
+                                                                                class="lni lni-files text-secondary fs-3"></i>
                                                                         @endif
                                                                     </div>
 
                                                                     <div class="flex-grow-1 overflow-hidden">
-                                                                        <p class="mb-0 small fw-bold text-truncate" title="{{ $file->caption }}">
+                                                                        <p class="mb-0 small fw-bold text-truncate"
+                                                                            title="{{ $file->caption }}">
                                                                             {{ $file->caption }}
                                                                         </p>
-                                                                        <small class="text-muted" style="font-size: 10px;">
+                                                                        <small class="text-muted"
+                                                                            style="font-size: 10px;">
                                                                             {{ strtoupper(pathinfo($file->file_name, PATHINFO_EXTENSION)) }}
                                                                         </small>
                                                                     </div>
 
                                                                     <a href="{{ asset('storage/uploads/persil/' . $file->file_name) }}"
-                                                                        target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                                                        target="_blank"
+                                                                        class="btn btn-sm btn-outline-primary ms-2">
                                                                         <i class="lni lni-eye"></i>
                                                                     </a>
                                                                 </div>
                                                             @endforeach
                                                         </div>
                                                     @else
-                                                        <div class="text-center py-4 text-muted border border-dashed rounded">
+                                                        <div
+                                                            class="text-center py-4 text-muted border border-dashed rounded">
                                                             <i class="lni lni-cross-circle fs-2 opacity-50 mb-2"></i>
                                                             <p class="small mb-0">Tidak ada lampiran.</p>
                                                         </div>
@@ -217,7 +238,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer bg-light">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Tutup</button>
                                     </div>
                                 </div>
                             </div>
@@ -246,7 +268,7 @@
     <style>
         .hover-shadow:hover {
             background-color: #f8f9fa !important;
-            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+            box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
             border-color: #007bff !important;
             cursor: pointer;
         }

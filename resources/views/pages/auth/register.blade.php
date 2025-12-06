@@ -244,7 +244,7 @@
         <div class="login-left-content">
             <h1>BUAT AKUN BARU</h1>
             <p>Bergabung dengan Sistem Pertanahan Desa dan mulai kelola data Anda sekarang</p>
-            
+
             <div class="features">
                 <div class="feature">
                     <i class="bi bi-shield-check"></i>
@@ -269,7 +269,8 @@
 
             {{-- Notifikasi Error --}}
             @if ($errors->any())
-                <div style="background:#ffe2e2; border:1px solid #ffb3b3; color:#b30000; padding:12px; border-radius:8px; margin-top:15px; font-size:14px;">
+                <div
+                    style="background:#ffe2e2; border:1px solid #ffb3b3; color:#b30000; padding:12px; border-radius:8px; margin-top:15px; font-size:14px;">
                     <strong>⚠️ Perhatian!</strong>
                     <ul style="margin: 8px 0 0 18px;">
                         @foreach ($errors->all() as $error)
@@ -283,22 +284,34 @@
                 @csrf
                 <div class="form-group">
                     <label for="name">Nama Lengkap</label>
-                    <input type="text" name="name" id="name" placeholder="Masukkan nama lengkap Anda" value="{{ old('name') }}" required>
+                    <input type="text" name="name" id="name" placeholder="Masukkan nama lengkap Anda"
+                        value="{{ old('name') }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" name="email" id="email" placeholder="Masukkan email Anda" value="{{ old('email') }}" required>
+                    <input type="email" name="email" id="email" placeholder="Masukkan email Anda"
+                        value="{{ old('email') }}" required>
                 </div>
-
+                <div class="form-group">
+                    <label for="role">Daftar Sebagai</label>
+                    <select name="role" id="role" required
+                        style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; background:#fafafa;">
+                        <option value="">-- Pilih Role --</option>
+                        <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="Pengunjung" {{ old('role') == 'Pengunjung' ? 'selected' : '' }}>Pengunjung</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Buat password yang kuat" required>
+                    <input type="password" name="password" id="password" placeholder="Buat password yang kuat"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="password_confirmation">Konfirmasi Password</label>
-                    <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Ulangi password Anda" required>
+                    <input type="password" name="password_confirmation" id="password_confirmation"
+                        placeholder="Ulangi password Anda" required>
                 </div>
 
                 <div class="terms">
@@ -312,9 +325,12 @@
 
                 <div class="social-login">
                     <span>Atau daftar dengan</span>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" alt="Google"></a>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
+                            alt="Facebook"></a>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png"
+                            alt="Twitter"></a>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/281/281764.png"
+                            alt="Google"></a>
                 </div>
             </form>
         </div>
@@ -341,10 +357,11 @@
 
                 const img = new Image();
                 const path = imagePaths[pathIndex];
-                
+
                 img.onload = function() {
                     console.log('Gambar berhasil dimuat dari:', path);
-                    loginLeft.style.background = `linear-gradient(rgba(255, 99, 164, 0.4), rgba(255, 99, 164, 0.3)), url('${path}')`;
+                    loginLeft.style.background =
+                        `linear-gradient(rgba(255, 99, 164, 0.4), rgba(255, 99, 164, 0.3)), url('${path}')`;
                     loginLeft.style.backgroundSize = 'cover';
                     loginLeft.style.backgroundPosition = 'center';
                 };

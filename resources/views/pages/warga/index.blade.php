@@ -90,19 +90,26 @@
                                     </ul>
 
                                     <div class="d-flex justify-content-center">
-                                        <a href="{{ route('warga.edit', $item->warga_id) }}"
-                                            class="btn btn-warning btn-sm me-2">
-                                            <i class="lni lni-pencil"></i> Edit
-                                        </a>
-                                        <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST"
-                                            onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="lni lni-trash-can"></i> Hapus
-                                            </button>
-                                        </form>
+
+                                        {{-- Tampilkan tombol hanya untuk Admin --}}
+                                        @if (Auth::user()->role === 'Admin')
+                                            <a href="{{ route('warga.edit', $item->warga_id) }}"
+                                                class="btn btn-warning btn-sm me-2">
+                                                <i class="lni lni-pencil"></i> Edit
+                                            </a>
+
+                                            <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST"
+                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="lni lni-trash-can"></i> Hapus
+                                                </button>
+                                            </form>
+                                        @endif
+
                                     </div>
+
                                 </div>
                             </div>
                         </div>

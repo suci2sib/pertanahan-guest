@@ -42,13 +42,14 @@ class AuthController extends Controller
                 'password.min' => 'Password minimal 3 karakter',
             ]);
 
-            // Cek apakah email ada di tabel user
+            // Cek apakah email ada
             $user = User::where('email', $request->email)->first();
 
             if ($user && Hash::check($request->password, $user->password)) {
                 Auth::login($user);
                 $request->session()->regenerate();
-                return redirect()->route('dashboard.index')->with('success', 'Login berhasil!');
+                return redirect()->route('dashboard.index')
+                    ->with('success', 'Login berhasil!');
             }
 
             return back()->with('error', 'Email atau password salah')->withInput();
@@ -59,31 +60,36 @@ class AuthController extends Controller
             $request->validate([
                 'name' => 'required|string|max:50',
                 'email' => 'required|email|unique:users',
+                'role' => 'required|in:Admin,Pengunjung',
                 'password' => [
                     'required',
                     'min:3',
-                    'regex:/[A-Z]/', // harus ada huruf besar
-                    'confirmed',     // pastikan ada field password_confirmation
+                    'regex:/[A-Z]/', // huruf besar
+                    'confirmed',     // password_confirmation
                 ],
             ], [
                 'name.required' => 'Nama wajib diisi',
                 'email.required' => 'Email wajib diisi',
                 'email.email' => 'Format email tidak valid',
                 'email.unique' => 'Email sudah digunakan',
+                'role.required' => 'Role wajib dipilih',
+                'role.in' => 'Role tidak valid',
                 'password.required' => 'Password wajib diisi',
                 'password.min' => 'Password minimal 3 karakter',
                 'password.regex' => 'Password harus mengandung minimal satu huruf kapital',
                 'password.confirmed' => 'Konfirmasi password tidak cocok',
             ]);
 
-            // Simpan ke tabel users
+            // Simpan user baru
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
+                'role' => $request->role,
                 'password' => Hash::make($request->password),
             ]);
 
-            return redirect()->route('auth.index')->with('success', 'Akun berhasil dibuat, silakan login!');
+            return redirect()->route('auth.index')
+                ->with('success', 'Akun berhasil dibuat, silakan login!');
         }
 
         // Jika tidak ada aksi

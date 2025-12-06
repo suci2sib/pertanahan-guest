@@ -51,40 +51,46 @@
             </div>
 
             <div class="row justify-content-center">
-                @forelse ($dataJenisPenggunaan as $item)
-                    <div class="col-lg-4 col-md-6 col-12 mb-4">
-                        <div class="single-team wow fadeInUp shadow-sm" data-wow-delay=".2s"
-                            style="border-radius: 15px; overflow: hidden;">
-                            <div class="p-4 bg-white text-center">
-                                <div class="mb-3">
-                                    <i class="lni lni-map" style="font-size: 50px; color: #28a745;"></i>
-                                </div>
-                                <h4 class="mb-1">{{ $item->nama_penggunaan }}</h4>
-                                <p class="text-muted mb-3">{{ $item->keterangan }}</p>
+    @forelse ($dataJenisPenggunaan as $item)
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="single-team wow fadeInUp shadow-sm" data-wow-delay=".2s"
+                style="border-radius: 15px; overflow: hidden;">
+                <div class="p-4 bg-white text-center">
+                    <div class="mb-3">
+                        <i class="lni lni-map" style="font-size: 50px; color: #28a745;"></i>
+                    </div>
+                    <h4 class="mb-1">{{ $item->nama_penggunaan }}</h4>
+                    <p class="text-muted mb-3">{{ $item->keterangan }}</p>
 
-                                <div class="d-flex justify-content-center">
-                                    <a href="{{ route('jenispenggunaan.edit', $item->jenis_id) }}"
-                                        class="btn btn-warning btn-sm me-2">
-                                        <i class="lni lni-pencil"></i> Edit
-                                    </a>
-                                    <form action="{{ route('jenispenggunaan.destroy', $item->jenis_id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            <i class="lni lni-trash-can"></i> Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+                    {{-- TOMBOL EDIT & DELETE HANYA UNTUK ADMIN --}}
+                    @if(Auth::user() && Auth::user()->role === 'Admin')
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ route('jenispenggunaan.edit', $item->jenis_id) }}"
+                                class="btn btn-warning btn-sm me-2">
+                                <i class="lni lni-pencil"></i> Edit
+                            </a>
+
+                            <form action="{{ route('jenispenggunaan.destroy', $item->jenis_id) }}" method="POST"
+                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="lni lni-trash-can"></i> Hapus
+                                </button>
+                            </form>
                         </div>
-                    </div>
-                @empty
-                    <div class="col-12 text-center mt-4">
-                        <p class="text-muted">Belum ada data jenis penggunaan yang terdaftar.</p>
-                    </div>
-                @endforelse
+                    @endif
+
+                </div>
             </div>
+        </div>
+    @empty
+        <div class="col-12 text-center mt-4">
+            <p class="text-muted">Belum ada data jenis penggunaan yang terdaftar.</p>
+        </div>
+    @endforelse
+</div>
+
             <div class="mt-3">
                     {{ $dataJenisPenggunaan->links('pagination::simple-bootstrap-5') }}
                 </div>

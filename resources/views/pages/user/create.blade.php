@@ -42,6 +42,14 @@
                                     <input type="email" name="email" id="email" value="{{ old('email') }}"
                                            class="form-control" maxlength="100" required>
                                 </div>
+                                <div class="col-md-6 mb-3x">
+                                        <label for="role" class="form-label">Role</label>
+                                        <select id="role" name="role" class="form-select">
+                                            <option value="">-- Pilih --</option>
+                                            <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
+                                            <option value="Pengunjung" {{ old('role') == 'Pengunjung' ? 'selected' : '' }}>Pengunjung</option>
+                                        </select>
+                                </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="password" class="form-label">Password <span class="text-danger">*</span></label>

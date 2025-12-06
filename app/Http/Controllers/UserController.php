@@ -35,6 +35,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name'     => 'required|string|max:20|',
             'email'    => 'required|string|max:100',
+            'role'    => 'required|string|max:100',
             'password' => 'required|string|max:20', Hash::make($request->password),
 
         ]);
@@ -70,6 +71,7 @@ class UserController extends Controller
         $user           = User::findOrFail($id);
         $user->name     = $request->name;
         $user->email    = $request->email;
+        $user->role     = $request->role;
         $user->password = $request->password;
 
         $user->save();
