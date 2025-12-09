@@ -1,5 +1,5 @@
 <header class="header navbar-area" style="padding:0;margin:0;">
-    <div class="container-fluid px-5"> <!-- tambahkan padding horizontal -->
+    <div class="container-fluid px-5">
         <nav class="navbar navbar-expand-lg w-100">
             <a class="navbar-brand" href="#home">
                 <img src="{{ asset('assets/assets-guest/images/logo/logo.png') }}" alt="Logo">
@@ -14,7 +14,7 @@
 
             <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                 @if (Auth::check())
-                    <ul id="nav" class="navbar-nav ms-auto">
+                    <ul id="nav" class="navbar-nav ms-auto align-items-center">
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}"
                                 href="{{ route('dashboard.index') }}#home">
@@ -39,20 +39,47 @@
                                 Kontak
                             </a>
                         </li>
-                        <form id="logout-form" action="{{ route('auth.destroy') }}" method="POST"
-                            style="display:none;">
-                            @csrf
-                        </form>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}"
+                                href="{{ route('dashboard.index') }}#developer">
+                                Developer
+                            </a>
+                        </li>
 
-                        <a class="nav-link" href="#"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            Logout
-                        </a>
+                        <li class="nav-item ms-lg-3">
+                            <form id="logout-form" action="{{ route('auth.destroy') }}" method="POST"
+                                style="display:none;">
+                                @csrf
+                            </form>
 
+                            <a class="btn" href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                style="background-color: #ff6b81; 
+                                       color: white; 
+                                       padding: 6px 20px; 
+                                       border-radius: 50px; 
+                                       font-size: 14px; 
+                                       border: none; 
+                                       font-weight: 600;
+                                       box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+                                       transition: 0.3s;">
+                                Logout
+                            </a>
+                        </li>
                     </ul>
                 @else
                     <div class="ms-auto">
-                        <a href="{{ route('auth.index') }}" class="btn btn-primary">Login</a>
+                        <a href="{{ route('auth.index') }}" class="btn" 
+                           style="background-color: #ff6b81; 
+                                  color: white; 
+                                  padding: 6px 20px; 
+                                  border-radius: 50px; 
+                                  font-size: 14px; 
+                                  border: none;
+                                  font-weight: 600;
+                                  box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);">
+                           Login
+                        </a>
                     </div>
                 @endif
             </div>
