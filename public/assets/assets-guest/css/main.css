@@ -2994,3 +2994,21 @@ ol {
 body {
   padding-top: 80px; /* tinggi navbar */
 }
+
+.section-white {
+        background-color: #ffffff;
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+
+    .section-gray {
+        background-color: #f4f6f9; /* Warna abu-abu muda agak kebiruan, nyaman di mata */
+        padding-top: 80px;
+        padding-bottom: 80px;
+        border-top: 1px solid #eef2f5; /* Garis tipis pemisah */
+    }
+
+    /* Memastikan Judul Section punya jarak yang cukup */
+    .section-title {
+        margin-bottom: 50px;
+    }
