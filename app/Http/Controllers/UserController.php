@@ -4,89 +4,96 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        $searchableColumns = ['name','email'];
-        $data['dataUser'] = User::search($request, $searchableColumns)->simplePaginate(9)
-                        ->onEachSide(2) ;
+        // Proteksi Ketat
+        if (Auth::user()->role !== 'Super Admin') {
+            return redirect()->route('dashboard.index')->with('error', 'Akses ditolak!');
+        }
+        
+        $searchableColumns = ['name', 'email', 'role'];
+
+        $data['dataUser'] = User::search($request, $searchableColumns)
+            ->latest()
+            ->paginate(9)
+            ->withQueryString();
+
         return view('pages.user.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
+        if (Auth::user()->role !== 'Super Admin') return redirect()->route('user.index');
         return view('pages.user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        if (Auth::user()->role !== 'Super Admin') return redirect()->route('user.index');
 
         $validated = $request->validate([
-            'name'     => 'required|string|max:20|',
-            'email'    => 'required|string|max:100',
-            'role'    => 'required|string|max:100',
-            'password' => 'required|string|max:20', Hash::make($request->password),
-
+            'name' => 'required|string|max:20',
+            'email' => 'required|string|email|max:100|unique:users',
+            'role' => 'required|in:Super Admin,Admin,User',
+            'password' => 'required|string|min:3|confirmed',
         ]);
 
-        $user = User::create($validated);
-        return redirect()->route('user.index')->with('success', 'Penambahan Data Berhasil!');
+        $validated['password'] = Hash::make($validated['password']);
+        User::create($validated);
+        
+        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
+        if (Auth::user()->role !== 'Super Admin') return redirect()->route('user.index');
         $data['dataUser'] = User::findOrFail($id);
         return view('pages.user.edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
-        $id             = $id;
-        $user           = User::findOrFail($id);
-        $user->name     = $request->name;
-        $user->email    = $request->email;
-        $user->role     = $request->role;
-        $user->password = $request->password;
+        if (Auth::user()->role !== 'Super Admin') return redirect()->route('user.index');
+
+        $user = User::findOrFail($id);
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:20',
+            'email' => 'required|string|email|max:100|unique:users,email,' . $id,
+            'role' => 'required|in:Super Admin,Admin,User',
+            'password' => 'nullable|string|min:3|confirmed',
+        ]);
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->role = $validated['role'];
+        
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
 
         $user->save();
-        return redirect()->route('user.index')->with('success', 'Perubahan Data Berhasil!');
+        return redirect()->route('user.index')->with('success', 'Data user berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-        $user = User::findOrFail($id);
+   public function destroy(string $id)
+{
+    // Pastikan logikanya: Jika BUKAN Admin DAN BUKAN Super Admin, maka tolak.
+    if (Auth::user()->role !== 'Admin' && Auth::user()->role !== 'Super Admin') {
+        return back()->with('error', 'Akses ditolak! Anda tidak memiliki izin.');
+    }
+        // Cegah menghapus diri sendiri
+        if (Auth::id() == $id) {
+            return redirect()->route('user.index')->with('error', 'Tidak bisa menghapus akun sendiri!');
+        }
 
+        $user = User::findOrFail($id);
         $user->delete();
+        
         return redirect()->route('user.index')->with('success', 'Data user berhasil dihapus');
     }
 }

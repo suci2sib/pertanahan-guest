@@ -17,7 +17,7 @@
         /* Kiri */
         .login-left {
             flex: 1;
-            background: linear-gradient(rgba(255, 99, 164, 0.4), rgba(255, 99, 164, 0.3));
+            background: linear-gradient(rgba(255, 99, 164, 0.4), rgba(255, 99, 164, 0.3)), url('{{ asset('assets/assets-guest/images/tanah.jpg') }}');
             background-size: cover;
             background-position: center;
             color: white;
@@ -30,9 +30,20 @@
             overflow: hidden;
         }
 
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
         .login-left-content {
             position: relative;
-            z-index: 3;
+            z-index: 2;
             text-align: center;
             width: 100%;
         }
@@ -102,7 +113,8 @@
             color: #333;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e0e0e0;
@@ -113,7 +125,8 @@
             background: #fafafa;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             border-color: #6C63FF;
             background: white;
             box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
@@ -235,12 +248,34 @@
             margin: 0;
             font-size: 13px;
         }
+
+        /* Success message */
+        .alert-success {
+            background: #e7f7ef;
+            border: 1px solid #b3e6cc;
+            color: #006633;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* Error message */
+        .alert-error {
+            background: #ffe2e2;
+            border: 1px solid #ffb3b3;
+            color: #b30000;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="login-left" id="loginLeft">
+    <div class="login-left">
         <div class="login-left-content">
             <h1>BUAT AKUN BARU</h1>
             <p>Bergabung dengan Sistem Pertanahan Desa dan mulai kelola data Anda sekarang</p>
@@ -267,10 +302,16 @@
             <h2>Register</h2>
             <p>Sudah punya akun? <a href="{{ route('auth.index') }}">Login sekarang</a></p>
 
+            {{-- Notifikasi Success --}}
+            @if (session('success'))
+                <div class="alert-success">
+                    <strong>✅ Sukses!</strong> {{ session('success') }}
+                </div>
+            @endif
+
             {{-- Notifikasi Error --}}
             @if ($errors->any())
-                <div
-                    style="background:#ffe2e2; border:1px solid #ffb3b3; color:#b30000; padding:12px; border-radius:8px; margin-top:15px; font-size:14px;">
+                <div class="alert-error">
                     <strong>⚠️ Perhatian!</strong>
                     <ul style="margin: 8px 0 0 18px;">
                         @foreach ($errors->all() as $error)
@@ -293,19 +334,26 @@
                     <input type="email" name="email" id="email" placeholder="Masukkan email Anda"
                         value="{{ old('email') }}" required>
                 </div>
-                <div class="form-group">
-                    <label for="role">Daftar Sebagai</label>
-                    <select name="role" id="role" required
-                        style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; background:#fafafa;">
-                        <option value="">-- Pilih Role --</option>
-                        <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
-                        <option value="Pengunjung" {{ old('role') == 'Pengunjung' ? 'selected' : '' }}>Pengunjung</option>
-                    </select>
-                </div>
+                
+                {{-- Di bagian select role, ganti dengan: --}}
+<div class="form-group">
+    <label for="role">Daftar Sebagai</label>
+    <select name="role" id="role" required
+        style="width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; background:#fafafa;">
+        <option value="">-- Pilih Role --</option>
+        <option value="Super Admin" {{ old('role') == 'Super Admin' ? 'selected' : '' }}>Super Admin (Full Access)</option>
+        <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin (Semua kecuali user management)</option>
+        <option value="User" {{ old('role') == 'User' ? 'selected' : '' }}>User (Hanya dashboard & profile)</option>
+    </select>
+</div>
+                
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" placeholder="Buat password yang kuat"
                         required>
+                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                        Minimal 3 karakter, harus mengandung huruf besar
+                    </small>
                 </div>
 
                 <div class="form-group">
@@ -315,7 +363,7 @@
                 </div>
 
                 <div class="terms">
-                    <input type="checkbox" id="agree" name="agree" required>
+                    <input type="checkbox" id="agree" name="agree">
                     <label for="agree">Saya menyetujui syarat & ketentuan</label>
                 </div>
 
@@ -335,49 +383,6 @@
             </form>
         </div>
     </div>
-
-    <script>
-        // Script untuk load gambar dengan multiple path attempts
-        document.addEventListener('DOMContentLoaded', function() {
-            const loginLeft = document.getElementById('loginLeft');
-            const imagePaths = [
-                'assets/assets-guest/images/tanah.jpg',
-                '/assets/assets-guest/images/tanah.jpg',
-                '../assets/assets-guest/images/tanah.jpg',
-                './assets/assets-guest/images/tanah.jpg',
-                'images/tanah.jpg',
-                '/images/tanah.jpg'
-            ];
-
-            function tryLoadImage(pathIndex) {
-                if (pathIndex >= imagePaths.length) {
-                    console.log('Semua path gambar gagal, menggunakan gradient background');
-                    return;
-                }
-
-                const img = new Image();
-                const path = imagePaths[pathIndex];
-
-                img.onload = function() {
-                    console.log('Gambar berhasil dimuat dari:', path);
-                    loginLeft.style.background =
-                        `linear-gradient(rgba(255, 99, 164, 0.4), rgba(255, 99, 164, 0.3)), url('${path}')`;
-                    loginLeft.style.backgroundSize = 'cover';
-                    loginLeft.style.backgroundPosition = 'center';
-                };
-
-                img.onerror = function() {
-                    console.log('Gagal memuat gambar dari:', path);
-                    tryLoadImage(pathIndex + 1);
-                };
-
-                img.src = path;
-            }
-
-            // Mulai mencoba dari path pertama
-            tryLoadImage(0);
-        });
-    </script>
 </body>
 
 </html>

@@ -232,7 +232,7 @@
     <div class="login-right">
         <div class="login-box">
             <h2>Login</h2>
-            <p>Don't have an account? <a href="{{ route('auth.create') }}">Create your account</a></p>
+<p>Don't have an account? <a href="{{ route('auth.create') }}">Create your account</a></p>
 
             @if ($errors->any())
                 <div style="background:#ffe2e2; border:1px solid #ffb3b3; color:#b30000; padding:12px; border-radius:8px; margin-top:15px; font-size:14px;">

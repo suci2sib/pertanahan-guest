@@ -9,19 +9,51 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next, string $role): Response
-  {
-      if (Auth::check() && Auth::user()->role == $role) {
-          return $next($request);
-      }
+    {
+        if (!Auth::check()) {
+            return redirect()->route('auth.index')
+                ->with('error', 'Silakan login terlebih dahulu!');
+        }
 
-      return abort('403');
-
-  }
-
+        $userRole = Auth::user()->role;
+        
+        // SUPER ADMIN bisa akses SEMUA
+        if ($userRole === 'Super Admin') {
+            return $next($request);
+        }
+        
+        // ADMIN bisa akses semua KECUALI 'Super Admin' routes
+        if ($userRole === 'Admin') {
+            // Admin TIDAK bisa akses route yang khusus Super Admin
+            if ($role === 'Super Admin') {
+                return redirect()->route('dashboard.index')
+                    ->with('error', 'Akses ditolak! Hanya Super Admin yang bisa mengakses.');
+            }
+            return $next($request);
+        }
+        
+        // USER hanya bisa akses dashboard/profile
+        if ($userRole === 'User') {
+            // User hanya bisa akses route 'User' (dashboard, profile)
+            if ($role === 'User') {
+                return $next($request);
+            }
+            
+            // Jika coba akses admin/super admin routes
+            return redirect()->route('dashboard.index')
+                ->with('error', 'Akses ditolak! Anda hanya memiliki akses terbatas.');
+        }
+        
+        // Untuk backward compatibility dengan role 'Pengunjung'
+        if ($userRole === 'Pengunjung') {
+            if ($role === 'Pengunjung') {
+                return $next($request);
+            }
+            return redirect()->route('dashboard.index')
+                ->with('error', 'Akses ditolak!');
+        }
+        
+        return abort(403, 'Akses ditolak! Role Anda: ' . $userRole);
+    }
 }

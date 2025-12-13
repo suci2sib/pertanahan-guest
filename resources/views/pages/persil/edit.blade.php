@@ -1,194 +1,168 @@
 @extends('layouts.guest.app')
 
 @section('content')
-    <br><br>
-    <section id="editpersil" class="section team-area">
-        <div class="container">
+<br><br>
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10 col-12">
+                <div class="card shadow-sm" style="border-radius: 15px;">
+                    <div class="card-header bg-warning text-white text-center py-3">
+                        <h5 class="mb-0 text-white">Edit Data Persil</h5>
+                    </div>
+                    <div class="card-body p-4">
 
-            <div class="section-title text-center">
-                <h3 class="wow zoomIn" data-wow-delay=".2s">Edit Data Persil</h3>
-                <h2 class="wow fadeInUp" data-wow-delay=".4s">Perbarui Informasi Persil</h2>
-                <p class="wow fadeInUp" data-wow-delay=".6s">
-                    Silahkan perbarui data persil dan kelola lampiran di bawah ini.
-                </p>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10 col-12">
-
-                    {{-- Alert Notifikasi --}}
-                    @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                            <i class="lni lni-checkmark-circle"></i> {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-
-                    <div class="single-team shadow-sm p-4 wow fadeInUp bg-white" style="border-radius: 15px;">
-
-                        {{-- PENTING: enctype="multipart/form-data" WAJIB ADA --}}
                         <form action="{{ route('persil.update', $dataPersil->persil_id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
-                            {{-- Kode Persil --}}
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Kode Persil</label>
-                                <input type="text" name="kode_persil" class="form-control @error('kode_persil') is-invalid @enderror"
-                                    value="{{ old('kode_persil', $dataPersil->kode_persil) }}"
-                                    placeholder="Masukkan kode persil">
-                                @error('kode_persil') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            {{-- Data Utama --}}
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Kode Persil</label>
+                                    <input type="text" name="kode_persil" class="form-control" value="{{ old('kode_persil', $dataPersil->kode_persil) }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Pemilik</label>
+                                    <select name="pemilik_warga_id" class="form-select" required>
+                                        <option value="">-- Pilih Warga --</option>
+                                        @foreach($dataWarga as $w)
+                                            <option value="{{ $w->warga_id }}" 
+                                                {{ old('pemilik_warga_id', $dataPersil->pemilik_warga_id) == $w->warga_id ? 'selected' : '' }}>
+                                                {{ $w->nama }} - {{ $w->no_ktp }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
-                            {{-- Pemilik --}}
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Pemilik Warga</label>
-                                <select name="pemilik_warga_id" class="form-select @error('pemilik_warga_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Pemilik --</option>
-                                    @foreach ($dataWarga as $w)
-                                        <option value="{{ $w->warga_id }}"
-                                            {{ $dataPersil->pemilik_warga_id == $w->warga_id ? 'selected' : '' }}>
-                                            {{ $w->nama }} - {{ $w->no_ktp }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('pemilik_warga_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-
-                            <div class="row">
-                                {{-- Luas --}}
-                                <div class="col-md-6 mb-3">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
                                     <label class="form-label fw-bold">Luas (m²)</label>
-                                    <input type="number" name="luas_m2" class="form-control @error('luas_m2') is-invalid @enderror"
-                                        value="{{ old('luas_m2', $dataPersil->luas_m2) }}" placeholder="0">
-                                    @error('luas_m2') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    <input type="number" step="0.01" name="luas_m2" class="form-control" value="{{ old('luas_m2', $dataPersil->luas_m2) }}" required>
                                 </div>
-
-                                {{-- Penggunaan --}}
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-6">
                                     <label class="form-label fw-bold">Penggunaan</label>
-                                    <input type="text" name="penggunaan" class="form-control @error('penggunaan') is-invalid @enderror"
-                                        value="{{ old('penggunaan', $dataPersil->penggunaan) }}"
-                                        placeholder="Contoh: Pertanian">
-                                    @error('penggunaan') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    <input type="text" name="penggunaan" class="form-control" value="{{ old('penggunaan', $dataPersil->penggunaan) }}" required>
                                 </div>
                             </div>
 
-                            {{-- Alamat --}}
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Alamat Lahan</label>
-                                <textarea name="alamat_lahan" class="form-control @error('alamat_lahan') is-invalid @enderror" rows="2" placeholder="Masukkan alamat">{{ old('alamat_lahan', $dataPersil->alamat_lahan) }}</textarea>
-                                @error('alamat_lahan') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <textarea name="alamat_lahan" class="form-control" rows="2" required>{{ old('alamat_lahan', $dataPersil->alamat_lahan) }}</textarea>
                             </div>
 
-                            {{-- RT & RW --}}
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">RT</label>
-                                    <input type="text" name="rt" class="form-control"
-                                        value="{{ old('rt', $dataPersil->rt) }}">
+                            <div class="row mb-4">
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label">RT</label>
+                                    <input type="text" name="rt" class="form-control" value="{{ old('rt', $dataPersil->rt) }}">
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">RW</label>
-                                    <input type="text" name="rw" class="form-control"
-                                        value="{{ old('rw', $dataPersil->rw) }}">
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label">RW</label>
+                                    <input type="text" name="rw" class="form-control" value="{{ old('rw', $dataPersil->rw) }}">
                                 </div>
                             </div>
 
-                            <hr class="my-4">
+                            <hr>
 
-                            {{-- =========================================== --}}
-                            {{-- BAGIAN LAMPIRAN (EXISTING & NEW) --}}
-                            {{-- =========================================== --}}
-
-                            {{-- 1. Daftar Lampiran yang Sudah Ada --}}
+                            {{-- BAGIAN 1: GALERI FOTO LAMA --}}
                             <div class="mb-4">
-                                <label class="form-label fw-bold mb-3"><i class="lni lni-files me-1"></i> Lampiran Saat Ini</label>
-
+                                <label class="form-label fw-bold">Lampiran Saat Ini</label>
                                 @if($dataPersil->attachments->count() > 0)
-                                    <div class="row g-3">
-                                        @foreach($dataPersil->attachments as $media)
-                                            <div class="col-md-6">
-                                                <div class="d-flex align-items-center p-2 border rounded bg-light position-relative">
-
-                                                    {{-- Icon File --}}
-                                                    <div class="me-3 text-center" style="width: 40px;">
-                                                        @if(str_contains($media->mime_type, 'image'))
-                                                            <i class="lni lni-image text-success fs-3"></i>
-                                                        @elseif(str_contains($media->mime_type, 'pdf'))
-                                                            <i class="lni lni-empty-file text-danger fs-3"></i>
-                                                        @else
-                                                            <i class="lni lni-files text-secondary fs-3"></i>
-                                                        @endif
-                                                    </div>
-
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <p class="mb-0 small fw-bold text-truncate">{{ $media->caption }}</p>
-                                                        <a href="{{ asset('storage/uploads/persil/' . $media->file_name) }}" target="_blank" class="small text-primary text-decoration-none">
-                                                            Lihat File
+                                    <div class="d-flex flex-wrap gap-3 p-3 bg-light rounded border">
+                                        @foreach($dataPersil->attachments as $file)
+                                            <div class="text-center position-relative" style="width: 100px;">
+                                                <div class="border rounded overflow-hidden bg-white mb-1 shadow-sm" style="height: 100px; display: flex; align-items: center; justify-content: center;">
+                                                    @if(str_contains($file->mime_type, 'image'))
+                                                        <a href="{{ asset('storage/uploads/persil/' . $file->file_name) }}" target="_blank">
+                                                            <img src="{{ asset('storage/uploads/persil/' . $file->file_name) }}" style="width: 100%; height: 100%; object-fit: cover;">
                                                         </a>
-                                                    </div>
-
-                                                    {{-- Tombol Hapus per File --}}
-                                                    {{-- Pastikan route 'media.delete' sudah dibuat --}}
-                                                    <button type="button" class="btn btn-sm btn-danger ms-2"
-                                                            onclick="confirmDeleteMedia('{{ route('persil.deleteMedia', $media->media_id) }}')">
-                                                        <i class="lni lni-trash-can"></i>
-                                                    </button>
+                                                    @else
+                                                        <a href="{{ asset('storage/uploads/persil/' . $file->file_name) }}" target="_blank" class="text-decoration-none text-danger">
+                                                            <i class="lni lni-files fs-2"></i>
+                                                        </a>
+                                                    @endif
                                                 </div>
+                                                {{-- Tombol Hapus per Item --}}
+                                                <button type="button" class="btn btn-xs btn-danger w-100 py-0" 
+                                                   style="font-size: 11px;"
+                                                   onclick="confirmDeleteMedia('{{ route('persil.deleteMedia', $file->media_id) }}')">
+                                                    <i class="lni lni-trash-can"></i> Hapus
+                                                </button>
                                             </div>
                                         @endforeach
                                     </div>
                                 @else
-                                    <div class="alert alert-secondary py-2 small">
-                                        Belum ada lampiran.
-                                    </div>
+                                    <p class="text-muted small fst-italic">Belum ada lampiran tersimpan.</p>
                                 @endif
                             </div>
 
-                            {{-- 2. Upload Lampiran Baru --}}
+                            {{-- BAGIAN 2: UPLOAD FOTO BARU --}}
                             <div class="mb-4">
-                                <label class="form-label fw-bold text-primary">
-                                    <i class="lni lni-cloud-upload me-1"></i> Tambah Lampiran Baru
-                                </label>
-                                <input type="file" name="files[]" class="form-control" multiple accept=".jpg,.jpeg,.png,.pdf">
-                                <div class="form-text text-muted small">
-                                    Biarkan kosong jika tidak ingin menambah file baru.
+                                <label class="form-label fw-bold">Tambah Lampiran Baru</label>
+                                <input type="file" name="files[]" id="file-input" class="form-control" multiple accept="image/*,.pdf">
+                                
+                                <div class="mt-3">
+                                    <label class="small text-muted mb-2 fw-bold">Preview Baru:</label>
+                                    <div id="image-preview" class="d-flex flex-wrap gap-2"></div>
                                 </div>
-                                @error('files.*') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
-                            {{-- =========================================== --}}
-
-                            <div class="d-flex justify-content-between mt-5">
-                                <a href="{{ route('persil.index') }}" class="btn btn-secondary px-4">
-                                    Batal
-                                </a>
-                                <button type="submit" class="btn btn-primary px-4">
-                                    <i class="lni lni-save me-1"></i> Simpan Perubahan
-                                </button>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="{{ route('persil.index') }}" class="btn btn-secondary">Batal</a>
+                                <button type="submit" class="btn btn-primary px-5">Simpan Perubahan</button>
                             </div>
-
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    {{-- Script & Form Hidden untuk Delete Media --}}
-    <form id="delete-media-form" action="" method="POST" style="display: none;">
-        @csrf
-        @method('DELETE')
-    </form>
+{{-- Hidden Form Delete Media --}}
+<form id="delete-media-form" action="" method="POST" style="display: none;">
+    @csrf @method('DELETE')
+</form>
 
-    <script>
-        function confirmDeleteMedia(url) {
-            if (confirm('Apakah Anda yakin ingin menghapus file lampiran ini?')) {
-                var form = document.getElementById('delete-media-form');
-                form.action = url;
-                form.submit();
-            }
+<script>
+    // Script Preview
+    document.getElementById('file-input').addEventListener('change', function(event) {
+        const previewContainer = document.getElementById('image-preview');
+        previewContainer.innerHTML = ''; 
+        if (this.files.length > 0) {
+            Array.from(this.files).forEach(file => {
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'border rounded overflow-hidden shadow-sm';
+                imgDiv.style.width = '80px';
+                imgDiv.style.height = '80px';
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        imgDiv.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    imgDiv.className += ' bg-light d-flex align-items-center justify-content-center text-danger';
+                    imgDiv.innerHTML = '<i class="lni lni-files fs-4"></i>';
+                }
+                previewContainer.appendChild(imgDiv);
+            });
         }
-    </script>
+    });
+
+    // Script Delete Confirm
+    function confirmDeleteMedia(url) {
+        if (confirm('Yakin ingin menghapus lampiran ini secara permanen?')) {
+            var form = document.getElementById('delete-media-form');
+            form.action = url;
+            form.submit();
+        }
+    }
+</script>
 @endsection

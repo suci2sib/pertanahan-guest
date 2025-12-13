@@ -9,63 +9,61 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    /**
-     * Tampilkan halaman login
-     */
     public function index()
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard.index')
+                ->with('info', 'Anda sudah login!');
+        }
+        
         return view('pages.auth.login');
     }
 
-    /**
-     * Tampilkan halaman register
-     */
     public function create()
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard.index')
+                ->with('info', 'Anda sudah login!');
+        }
+        
         return view('pages.auth.register');
     }
 
-    /**
-     * Proses login & register (tergantung tombol yang ditekan)
-     */
     public function store(Request $request)
     {
-        // Jika tombol login ditekan
+        // ==================== LOGIN ====================
         if ($request->has('login')) {
             $request->validate([
                 'email' => 'required|email',
                 'password' => 'required|min:3',
-            ], [
-                'email.required' => 'Email tidak boleh kosong',
-                'email.email' => 'Format email tidak valid',
-                'password.required' => 'Password tidak boleh kosong',
-                'password.min' => 'Password minimal 3 karakter',
             ]);
 
-            // Cek apakah email ada
-            $user = User::where('email', $request->email)->first();
-
-            if ($user && Hash::check($request->password, $user->password)) {
-                Auth::login($user);
+            // Gunakan Auth::attempt() untuk handle session otomatis
+            $credentials = $request->only('email', 'password');
+            
+            if (Auth::attempt($credentials, $request->filled('remember'))) {
                 $request->session()->regenerate();
+                
                 return redirect()->route('dashboard.index')
-                    ->with('success', 'Login berhasil!');
+                    ->with('success', 'Login berhasil! Selamat datang, ' . Auth::user()->name . '!');
             }
 
-            return back()->with('error', 'Email atau password salah')->withInput();
+            return back()
+                ->with('error', 'Email atau password salah!')
+                ->withInput($request->only('email'));
         }
 
-        // Jika tombol register ditekan
+        // ==================== REGISTER ====================
         if ($request->has('register')) {
             $request->validate([
                 'name' => 'required|string|max:50',
                 'email' => 'required|email|unique:users',
-                'role' => 'required|in:Admin,Pengunjung',
+                'role' => 'required|in:Super Admin,Admin,User', // 3 ROLE
                 'password' => [
                     'required',
                     'min:3',
-                    'regex:/[A-Z]/', // huruf besar
-                    'confirmed',     // password_confirmation
+                    'regex:/[A-Z]/',
+                    'confirmed',
                 ],
             ], [
                 'name.required' => 'Nama wajib diisi',
@@ -81,30 +79,35 @@ class AuthController extends Controller
             ]);
 
             // Simpan user baru
-            User::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'role' => $request->role,
                 'password' => Hash::make($request->password),
             ]);
 
+            // Redirect ke login dengan pesan sukses
             return redirect()->route('auth.index')
-                ->with('success', 'Akun berhasil dibuat, silakan login!');
+                ->with('success', 'Akun berhasil dibuat! Silakan login dengan email dan password Anda.');
         }
 
-        // Jika tidak ada aksi
-        return back()->with('error', 'Aksi tidak dikenali.');
+        return back()->with('error', 'Aksi tidak valid!')->withInput();
     }
 
-    /**
-     * Logout user
-     */
     public function destroy(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('auth.index')
+                ->with('error', 'Anda belum login!');
+        }
+        
+        $userName = Auth::user()->name;
+        
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('auth.index')->with('success', 'Anda telah logout.');
+        return redirect()->route('auth.index')
+            ->with('success', 'Logout berhasil! Sampai jumpa lagi, ' . $userName . '.');
     }
 }

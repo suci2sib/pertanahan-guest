@@ -12,7 +12,10 @@ class CreateJenisPenggunaanDummy extends Seeder
      */
     public function run(): void
     {
-        $faker         = Faker::create('id_ID');
+        $faker = Faker::create('id_ID');
+        
+        $this->command->info('📊 Membuat 100 jenis penggunaan dummy...');
+        
         $daftarPilihan = [
             'Rumah Tinggal',
             'Sawah',
@@ -34,13 +37,12 @@ class CreateJenisPenggunaanDummy extends Seeder
 
             DB::table('jenispenggunaan')->insert([
                 'nama_penggunaan' => $namaUnik,
-
-                // Keterangan variatif
                 'keterangan'      => 'Area ' . $jenisAcak . ' yang berlokasi di wilayah ' . $faker->streetName(),
-
                 'created_at'      => now(),
                 'updated_at'      => now(),
             ]);
         }
+        
+        $this->command->info('✅ 100 jenis penggunaan dummy berhasil dibuat!');
     }
 }

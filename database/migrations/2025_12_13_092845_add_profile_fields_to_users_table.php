@@ -6,22 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('User')->after('password'); // Default 'User'
+            $table->string('foto_profil')->nullable()->after('email');
+            $table->string('no_hp', 20)->nullable()->after('foto_profil');
+            $table->text('alamat')->nullable()->after('no_hp');
         });
-        
-        // Set user pertama sebagai Super Admin
-        \Illuminate\Support\Facades\DB::table('users')
-            ->where('id', 1)
-            ->update(['role' => 'Super Admin']);
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
+            $table->dropColumn(['foto_profil', 'no_hp', 'alamat']);
         });
     }
 };

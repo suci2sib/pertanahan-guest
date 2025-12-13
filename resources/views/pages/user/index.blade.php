@@ -5,99 +5,90 @@
     <section id="user" class="section team-area">
         <div class="container">
             <div class="section-title text-center">
-                <h3 class="wow zoomIn" data-wow-delay=".2s">Data User</h3>
-                <h2 class="wow fadeInUp" data-wow-delay=".4s">Daftar Pengguna Sistem</h2>
-                <p class="wow fadeInUp" data-wow-delay=".6s">
-                    Berikut adalah daftar user yang memiliki akses ke sistem ini.
-                </p>
+                <h3 class="wow zoomIn">Data User</h3>
+                <h2 class="wow fadeInUp">Daftar Pengguna Sistem</h2>
             </div>
 
             <div class="table-responsive">
-                {{-- Search --}}
+                {{-- SEARCH --}}
                 <form method="GET" action="{{ route('user.index') }}" class="mb-3">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="input-group">
+                    <div class="row justify-content-center">
+                        <div class="col-md-5">
+                            <div class="input-group shadow-sm">
                                 <input type="text" name="search" class="form-control"
-                                    value="{{ request('search') }}" placeholder="Search">
-                                <button type="submit" class="input-group-text">
-                                    🔍
-                                </button>
+                                    value="{{ request('search') }}" placeholder="Cari Nama / Email / Role">
+                                <button type="submit" class="btn btn-primary"><i class="lni lni-search-alt"></i></button>
                                 @if (request('search'))
-                                    <a href="{{ request()->fullUrlWithQuery(['search' => null]) }}"
-                                        class="btn btn-outline-secondary ml-3">Clear</a>
+                                    <a href="{{ route('user.index') }}" class="btn btn-secondary">Reset</a>
                                 @endif
                             </div>
                         </div>
                     </div>
                 </form>
 
-                {{-- Pesan sukses --}}
-                @if (session('success'))
-                    <div class="alert alert-success text-center">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                @if (session('success')) <div class="alert alert-success text-center">{{ session('success') }}</div> @endif
+                @if (session('error')) <div class="alert alert-danger text-center">{{ session('error') }}</div> @endif
 
-                {{-- Tombol tambah user hanya untuk Admin --}}
-                    <div class="text-center mb-4">
-                        <a href="{{ route('user.create') }}" class="btn btn-primary">
-                            <i class="lni lni-plus"></i> Tambah User
-                        </a>
-                    </div>
-  
+                <div class="text-center mb-4">
+                    <a href="{{ route('user.create') }}" class="btn btn-primary rounded-pill px-4"><i class="lni lni-plus"></i> Tambah User</a>
+                </div>
 
                 <div class="row justify-content-center">
                     @forelse ($dataUser as $item)
                         <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="single-team shadow-sm" style="border-radius: 15px;">
-                                <div class="p-4 bg-white text-center">
-
+                            <div class="single-team shadow-sm bg-white d-flex flex-column h-100" style="border-radius: 15px; border: 1px solid #eee;">
+                                <div class="p-4 text-center flex-grow-1">
                                     <div class="mb-3">
-                                        <i class="lni lni-user" style="font-size: 50px; color: #007bff;"></i>
+                                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle" style="width: 70px; height: 70px;">
+                                            <i class="lni lni-user text-primary" style="font-size: 30px;"></i>
+                                        </div>
                                     </div>
 
-                                    <h4 class="mb-1">{{ $item->name }}</h4>
-                                    <p class="text-muted mb-2">{{ $item->email }}</p>
+                                    <h5 class="mb-1 fw-bold">{{ $item->name }}</h5>
+                                    <p class="text-muted small mb-2">{{ $item->email }}</p>
+                                    
+                                    @php
+                                        $badgeClass = match($item->role) {
+                                            'Super Admin' => 'bg-dark',
+                                            'Admin' => 'bg-primary',
+                                            default => 'bg-secondary'
+                                        };
+                                    @endphp
+                                    <span class="badge {{ $badgeClass }} rounded-pill px-3">{{ $item->role }}</span>
+                                </div>
 
-                                    <ul class="list-unstyled mb-3">
-                                        <li><i class="lni lni-key"></i> ID: {{ $item->id }}</li>
-                                        <li><i class="lni lni-shield"></i> Role: {{ $item->role }}</li>
-                                    </ul>
-
-                                    {{-- Tombol Edit & Hapus hanya untuk Admin --}}
-                                    @if (Auth::user()->role === 'Admin')
-                                        <div class="d-flex justify-content-center">
-                                            <a href="{{ route('user.edit', $item->id) }}"
-                                                class="btn btn-warning btn-sm me-2">
+                                {{-- ACTION BUTTONS --}}
+                                @if (Auth::user()->role === 'Super Admin')
+                                    <div class="card-footer bg-white border-top-0 p-3 pt-0 mt-auto">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="{{ route('user.edit', $item->id) }}" class="btn btn-warning btn-sm rounded-pill px-4 text-white shadow-sm">
                                                 <i class="lni lni-pencil"></i> Edit
                                             </a>
 
-                                            <form action="{{ route('user.destroy', $item->id) }}" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus user ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="lni lni-trash-can"></i> Hapus
-                                                </button>
-                                            </form>
+                                            @if(Auth::id() !== $item->id)
+                                                <form action="{{ route('user.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus user {{ $item->name }}?');">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm rounded-pill px-4 shadow-sm">
+                                                        <i class="lni lni-trash-can"></i> Hapus
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <button class="btn btn-secondary btn-sm rounded-pill px-3 disabled" disabled><i class="lni lni-lock"></i> Saya</button>
+                                            @endif
                                         </div>
-                                    @endif
-
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @empty
-                        <div class="col-12 text-center mt-4">
-                            <p class="text-muted">Belum ada data user.</p>
-                        </div>
+                        <div class="col-12 text-center mt-4"><p class="text-muted">Data user tidak ditemukan.</p></div>
                     @endforelse
                 </div>
 
-                <div class="mt-3">
-                    {{ $dataUser->links('pagination::simple-bootstrap-5') }}
+                {{-- PAGINATION --}}
+                <div class="d-flex justify-content-center mt-3">
+                    {{ $dataUser->links() }}
                 </div>
-
             </div>
         </div>
     </section>

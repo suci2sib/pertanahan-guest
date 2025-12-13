@@ -3,83 +3,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\JenisPenggunaan;
+use Illuminate\Support\Facades\Auth;
 
 class JenisPenggunaanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        $searchableColumns = ['nama_penggunaan','keterangan'];
-        $data['dataJenisPenggunaan'] = JenisPenggunaan::search($request, $searchableColumns)->simplePaginate(9)
-                        ->onEachSide(2) ;
+        $searchableColumns = ['nama_penggunaan', 'keterangan'];
+        
+        $data['dataJenisPenggunaan'] = JenisPenggunaan::search($request, $searchableColumns)
+            ->paginate(9)
+            ->withQueryString();
+
         return view('pages.jenispenggunaan.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-       return view('pages.jenispenggunaan.create');
+    public function create() { return view('pages.jenispenggunaan.create'); }
+    
+    public function store(Request $request) {
+        $validated = $request->validate(['nama_penggunaan' => 'required|max:50', 'keterangan' => 'required|max:100']);
+        JenisPenggunaan::create($validated);
+        return redirect()->route('jenispenggunaan.index')->with('success', 'Penambahan Data Berhasil!');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-    'nama_penggunaan' => 'required|string|max:50',
-    'keterangan' => 'required|string|max:100',
-]);
-
-$jenisPenggunaan = JenisPenggunaan::create($validated);
-return redirect()->route('jenispenggunaan.index')->with('success', 'Penambahan Data Berhasil!');
+    public function edit(string $id) {
+        $data['dataJenisPenggunaan'] = JenisPenggunaan::findOrFail($id);
+        return view('pages.jenispenggunaan.edit', $data);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-
+    public function update(Request $request, string $id) {
+        $jp = JenisPenggunaan::findOrFail($id);
+        $jp->update($request->all());
+        return redirect()->route('jenispenggunaan.index')->with('success', 'Perubahan Data Berhasil!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-         $data['dataJenisPenggunaan'] = JenisPenggunaan::findOrFail($id);
-    return view('pages.jenispenggunaan.edit', $data);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-    $jenis_id = $id;
-    $jenisPenggunaan = JenisPenggunaan::findOrFail($jenis_id);
-
-    $jenisPenggunaan->nama_penggunaan = $request->nama_penggunaan;
-    $jenisPenggunaan->keterangan = $request->keterangan;
-
-    $jenisPenggunaan->save();
-
-    return redirect()->route('jenispenggunaan.index')->with('success', 'Perubahan Data Berhasil!');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
-    {
-         $jenisPenggunaan = JenisPenggunaan::findOrFail($id);
-
-    $jenisPenggunaan->delete();
-    return redirect()->route('jenispenggunaan.index')->with('success', 'Data berhasil dihapus');
+{
+    // Pastikan logikanya: Jika BUKAN Admin DAN BUKAN Super Admin, maka tolak.
+    if (Auth::user()->role !== 'Admin' && Auth::user()->role !== 'Super Admin') {
+        return back()->with('error', 'Akses ditolak! Anda tidak memiliki izin.');
+    }
+        JenisPenggunaan::findOrFail($id)->delete();
+        return redirect()->route('jenispenggunaan.index')->with('success', 'Data berhasil dihapus');
     }
 }

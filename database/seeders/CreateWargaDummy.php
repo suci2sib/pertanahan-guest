@@ -13,6 +13,8 @@ class CreateWargaDummy extends Seeder
     public function run(): void
     {
         $faker = Faker::create('id_ID');
+        
+        $this->command->info('📊 Membuat 100 warga dummy...');
 
         for ($i = 0; $i < 100; $i++) {
             DB::table('warga')->insert([
@@ -23,8 +25,11 @@ class CreateWargaDummy extends Seeder
                 'pekerjaan'     => $faker->jobTitle(),
                 'telp'          => $faker->phoneNumber(),
                 'email'         => $faker->unique()->safeEmail(),
+                'created_at'    => now(), // TAMBAH
+                'updated_at'    => now(), // TAMBAH
             ]);
         }
+        
+        $this->command->info('✅ 100 warga dummy berhasil dibuat!');
     }
-
 }
