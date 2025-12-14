@@ -104,7 +104,7 @@
         .single-card:hover .icon-blue { background-color: #3498db !important; color: #fff !important; }
         .icon-green { background-color: #eafaf1 !important; color: #2ecc71 !important; }
         .single-card:hover .icon-green { background-color: #2ecc71 !important; color: #fff !important; }
-        
+
         .single-card h4.title { font-size: 20px; color: #333; margin-bottom: 15px; }
         .table-list li { list-style: none; color: #666; margin-bottom: 8px; font-size: 14px; }
         .table-list li i { color: #ff6b81; margin-right: 8px; font-weight: 700; }
@@ -122,7 +122,7 @@
         .about-img-main { width: 100%; border-radius: 25px; position: relative; z-index: 2; border: 4px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .about-img-decoration { position: absolute; top: 15px; right: -15px; width: 100%; height: 100%; border: 2px dashed #ff6b81; border-radius: 25px; z-index: 1; opacity: 0.6; }
         .blur-shape { position: absolute; width: 180px; height: 180px; background: #ffe3e8; filter: blur(40px); border-radius: 50%; z-index: 0; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.5; }
-        
+
         .about-label { background: #fff0f3; color: #ff6b81; padding: 5px 15px; border-radius: 15px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
         .feature-item { display: flex; align-items: start; margin-bottom: 15px; }
         .feature-icon { width: 35px; height: 35px; background: #fff0f3; color: #ff6b81; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0; transition: 0.3s; }
@@ -158,10 +158,10 @@
 
         .footer-brand { font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; display: block; margin-bottom: 10px; }
         .footer-widget h6 { color: #fff; font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; border-bottom: 2px solid rgba(255,255,255,0.3); display: inline-block; padding-bottom: 3px; }
-        
+
         .footer-links li a { color: rgba(255,255,255,0.9); text-decoration: none; transition: 0.3s; }
         .footer-links li a:hover { color: #fff; padding-left: 5px; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
-        
+
         .social-btn { display: inline-flex; width: 32px; height: 32px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; align-items: center; justify-content: center; color: #fff; font-size: 14px; margin-right: 8px; transition: 0.3s; }
         .social-btn:hover { background: #fff; color: #ff6b81; transform: translateY(-2px); }
 
@@ -275,7 +275,7 @@
         font-size: 36px; font-weight: 800; color: #333;
         margin: 15px 0; line-height: 1.2;
     }
-    
+
     /* Kotak Visi Misi */
     .vm-box {
         background: #fff;
@@ -327,7 +327,7 @@
     }
     .flow-item:hover .flow-circle { background: #ff6b81; color: #fff; box-shadow: 0 10px 20px rgba(255, 107, 129, 0.2); }
     .flow-text { font-size: 14px; font-weight: 700; color: #444; }
-    
+
     @media (max-width: 768px) {
         .stat-item { border-right: none; margin-bottom: 20px; }
         .about-img-wrapper { margin-bottom: 40px; }
@@ -336,14 +336,14 @@
 
 <section id="about" class="section-about-comprehensive">
     <div class="container">
-        
+
         <div class="row align-items-center">
-            
+
             <div class="col-lg-5 mb-4 mb-lg-0 wow fadeInLeft">
                 <div class="about-img-wrapper">
                     <div class="about-deco-bg"></div>
                     <img src="{{ asset('assets/assets-guest/images/hero/tanahAbout.jpg') }}" alt="Tentang Web" class="about-img-main">
-                    
+
                     <div class="floating-stat">
                         <i class="lni lni-protection text-danger" style="font-size: 24px;"></i>
                         <div>
@@ -403,7 +403,7 @@
             <div class="col-12">
                 <h5 class="flow-mini-title">Bagaimana Sistem Bekerja?</h5>
             </div>
-            
+
             <div class="col-6 col-md-3 mb-4">
                 <div class="flow-item">
                     <div class="flow-circle"><i class="lni lni-files"></i></div>
@@ -479,6 +479,20 @@
                             <div class="icon-box icon-green"><i class="lni lni-layers"></i></div>
                             <h4 class="title">Jenis Penggunaan</h4>
                             <p>Klasifikasi jenis penggunaan tanah untuk kebutuhan pembangunan desa.</p>
+                            <ul class="table-list">
+                                <li><i class="lni lni-checkmark-circle"></i> Pertanian & perkebunan</li>
+                                <li><i class="lni lni-checkmark-circle"></i> Pemukiman & fasilitas</li>
+                                <li><i class="lni lni-checkmark-circle"></i> Kawasan industri</li>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <a href="{{ route('dokumen_persil.index') }}" class="text-decoration-none text-dark">
+                        <div class="single-card wow fadeInUp" data-wow-delay=".6s">
+                            <div class="icon-box icon-green"><i class="lni lni-layers"></i></div>
+                            <h4 class="title">Dokumen Persil</h4>
+                            <p>Layanan Tentang Dokumen Persil dengan Data Terlengkap.</p>
                             <ul class="table-list">
                                 <li><i class="lni lni-checkmark-circle"></i> Pertanian & perkebunan</li>
                                 <li><i class="lni lni-checkmark-circle"></i> Pemukiman & fasilitas</li>
