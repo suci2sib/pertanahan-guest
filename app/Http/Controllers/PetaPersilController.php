@@ -26,7 +26,7 @@ class PetaPersilController extends Controller
             // Anda dapat menambahkan scope filter/search di Model PetaPersil
             // ->search($request, $searchableColumns)
             ->latest()
-            ->simplePaginate(10)
+            ->paginate(9)
             ->withQueryString();
 
         return view('pages.peta_persil.index', $data);

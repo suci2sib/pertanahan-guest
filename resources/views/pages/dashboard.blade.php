@@ -1023,6 +1023,7 @@
                                             </h3>
                                             <p class="text-primary fw-bold mb-0" style="font-size: 15px;">Mahasiswa Sistem
                                                 Informasi</p>
+                                            <p class="text-primary fw-bold mb-0" style="font-size: 15px;">Generasi 24</p>
                                         </div>
                                         <span class="badge rounded-pill"
                                             style="background-color: rgba(255, 107, 129, 0.1); color: #ff6b81; font-weight: 700; padding: 8px 15px; border: 1px solid #ff6b81; font-size: 12px;">NIM:

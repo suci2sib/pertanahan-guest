@@ -5,7 +5,11 @@
     <section id="datadokumen" class="section team-area">
         <div class="container">
 
-            {{-- ... (Bagian Title, Search Form, Alerts, dan Tombol Tambah TIDAK DIUBAH) ... --}}
+            {{-- JUDUL --}}
+            <div class="section-title text-center">
+                <h3 class="wow zoomIn">Data Dokumen Persil</h3>
+                <h2 class="wow fadeInUp">Daftar Dokumen Tanah</h2>
+            </div>
 
             <div class="table-responsive">
                 {{-- SEARCH FORM --}}
@@ -86,7 +90,7 @@
                                 <div class="card-footer bg-white border-top-0 p-4 pt-0 mt-auto">
                                     <div class="d-flex justify-content-center flex-wrap gap-2">
 
-                                        {{-- PERUBAHAN UTAMA: Tombol Detail diubah menjadi Pemicu Modal --}}
+                                        {{-- Tombol Detail (Memicu Modal) --}}
                                         <button type="button"
                                             class="btn btn-outline-info btn-sm rounded-pill px-3 fw-bold shadow-sm"
                                             data-bs-toggle="modal"
@@ -95,11 +99,11 @@
                                         </button>
 
                                         @if (Auth::check() && in_array(Auth::user()->role, ['Admin', 'Super Admin']))
-                                            {{-- Tombol Edit (Diubah ke edit dokumen_persil) --}}
+                                            {{-- Tombol Edit --}}
                                             <a href="{{ route('dokumen_persil.edit', $d->dokumen_id) }}" class="btn btn-warning btn-sm rounded-pill px-3 text-white shadow-sm">
                                                 <i class="lni lni-pencil"></i> Edit
                                             </a>
-                                            {{-- Tombol Hapus (Diubah ke destroy dokumen_persil) --}}
+                                            {{-- Tombol Hapus --}}
                                             <form action="{{ route('dokumen_persil.destroy', $d->dokumen_id) }}" method="POST"
                                                 onsubmit="return confirm('Yakin hapus Dokumen {{ $d->jenis_dokumen }}? Semua lampiran juga akan terhapus.');">
                                                 @csrf @method('DELETE')
@@ -187,15 +191,157 @@
                             </div>
                         </div>
                     @empty
-                        {{-- ... (Placeholder Empty) ... --}}
+                        <div class="col-12 text-center mt-5">
+                            <div class="p-5 bg-light rounded border border-dashed">
+                                <h5 class="text-muted">Belum ada data dokumen persil.</h5>
+                            </div>
+                        </div>
                     @endforelse
                 </div>
 
-                {{-- PAGINATION --}}
-                <div class="d-flex justify-content-center mt-4">
-                    {{ $dataDokumen->links() }}
+                {{-- PAGINATION PERSIS SCREENSHOT --}}
+                @if($dataDokumen->hasPages())
+                <div class="d-flex flex-column align-items-center mt-5">
+                    
+                    {{-- INFO HASIL --}}
+                    <div class="text-muted mb-3">
+                        Showing {{ $dataDokumen->firstItem() }}
+                        to {{ $dataDokumen->lastItem() }}
+                        of {{ $dataDokumen->total() }} results
+                    </div>
+
+                    {{-- PAGINATION NAVIGATION --}}
+                    <div class="pagination-links">
+                        {{ $dataDokumen->links() }}
+                    </div>
+
                 </div>
+                @endif
+
             </div>
         </div>
     </section>
+
+    {{-- STYLE PAGINATION SEDERHANA SEPERTI SCREENSHOT --}}
+    <style>
+    /* PAGINATION STYLE SEDERHANA */
+    .pagination-links {
+        font-size: 14px;
+    }
+
+    .pagination-links .pagination {
+        margin: 0;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .pagination-links .page-link {
+        border: none;
+        background: transparent;
+        color: #333;
+        padding: 6px 10px;
+        text-decoration: none;
+        border-radius: 0;
+    }
+
+    .pagination-links .page-link:hover {
+        color: #000;
+        background-color: #f5f5f5;
+    }
+
+    .pagination-links .page-item.active .page-link {
+        font-weight: bold;
+        color: #000;
+        background: transparent;
+    }
+
+    .pagination-links .page-item.disabled .page-link {
+        color: #999;
+        background: transparent;
+    }
+
+    /* Text showing results */
+    .text-muted {
+        font-size: 14px;
+        color: #666 !important;
+        font-weight: 400;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .pagination-links .page-link {
+            padding: 4px 8px;
+            font-size: 13px;
+        }
+        
+        .pagination-links .pagination {
+            flex-wrap: wrap;
+        }
+    }
+    </style>
+
+    {{-- JAVASCRIPT UNTUK MODAL --}}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animasi untuk card saat masuk viewport
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Terapkan ke semua card
+        document.querySelectorAll('.single-team').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+        
+        // Optimasi modal untuk mobile
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.addEventListener('shown.bs.modal', function() {
+                const modalBody = this.querySelector('.modal-body');
+                if (modalBody) {
+                    modalBody.scrollTop = 0;
+                }
+            });
+        });
+    });
+    
+    // Fungsi untuk preview gambar di modal
+    function previewImageInModal(imgElement) {
+        const modal = new bootstrap.Modal(document.getElementById('imagePreviewModal'));
+        const modalImg = document.getElementById('modalPreviewImage');
+        const modalCaption = document.getElementById('modalPreviewCaption');
+        
+        modalImg.src = imgElement.src;
+        modalCaption.textContent = imgElement.alt;
+        modal.show();
+    }
+    </script>
+
+    {{-- Modal untuk preview gambar full size --}}
+    <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center p-0">
+                    <img id="modalPreviewImage" src="" class="img-fluid" alt="Preview" style="max-height: 70vh; object-fit: contain;">
+                    <p id="modalPreviewCaption" class="text-white mt-2"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

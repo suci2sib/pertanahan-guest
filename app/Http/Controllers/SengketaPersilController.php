@@ -28,7 +28,7 @@ class SengketaPersilController extends Controller
             ->filter($request, $filterableColumns)
             ->search($request, $searchableColumns)
             ->latest()
-            ->simplePaginate(10)
+            ->paginate(9)
             ->withQueryString();
 
         return view('pages.sengketa_persil.index', $data);

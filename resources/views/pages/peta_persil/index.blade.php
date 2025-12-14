@@ -211,11 +211,133 @@
                     @endforelse
                 </div>
 
-                {{-- PAGINATION --}}
-                <div class="d-flex justify-content-center mt-4">
-                    {{ $dataPeta->links() }}
+                {{-- PAGINATION PERSIS SCREENSHOT --}}
+                @if($dataPeta->hasPages())
+                <div class="d-flex flex-column align-items-center mt-5">
+                    
+                    {{-- INFO HASIL --}}
+                    <div class="text-muted mb-3">
+                        Showing {{ $dataPeta->firstItem() }}
+                        to {{ $dataPeta->lastItem() }}
+                        of {{ $dataPeta->total() }} results
+                    </div>
+
+                    {{-- PAGINATION NAVIGATION --}}
+                    <div class="pagination-links">
+                        {{ $dataPeta->links() }}
+                    </div>
+
                 </div>
+                @endif
+
             </div>
         </div>
     </section>
+
+    {{-- STYLE PAGINATION SEDERHANA SEPERTI SCREENSHOT --}}
+    <style>
+    /* PAGINATION STYLE SEDERHANA */
+    .pagination-links {
+        font-size: 14px;
+    }
+
+    .pagination-links .pagination {
+        margin: 0;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .pagination-links .page-link {
+        border: none;
+        background: transparent;
+        color: #333;
+        padding: 6px 10px;
+        text-decoration: none;
+        border-radius: 0;
+    }
+
+    .pagination-links .page-link:hover {
+        color: #000;
+        background-color: #f5f5f5;
+    }
+
+    .pagination-links .page-item.active .page-link {
+        font-weight: bold;
+        color: #000;
+        background: transparent;
+    }
+
+    .pagination-links .page-item.disabled .page-link {
+        color: #999;
+        background: transparent;
+    }
+
+    /* Text showing results */
+    .text-muted {
+        font-size: 14px;
+        color: #666 !important;
+        font-weight: 400;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .pagination-links .page-link {
+            padding: 4px 8px;
+            font-size: 13px;
+        }
+        
+        .pagination-links .pagination {
+            flex-wrap: wrap;
+        }
+    }
+
+    /* Efek hover untuk card */
+    .single-team {
+        transition: all 0.3s ease;
+    }
+
+    .single-team:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    }
+    </style>
+
+    {{-- JAVASCRIPT UNTUK MODAL --}}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animasi untuk card saat masuk viewport
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Terapkan ke semua card
+        document.querySelectorAll('.single-team').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+        
+        // Optimasi modal untuk mobile
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.addEventListener('shown.bs.modal', function() {
+                const modalBody = this.querySelector('.modal-body');
+                if (modalBody) {
+                    modalBody.scrollTop = 0;
+                }
+            });
+        });
+    });
+    </script>
 @endsection

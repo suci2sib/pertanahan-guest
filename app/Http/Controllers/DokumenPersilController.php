@@ -29,7 +29,7 @@ class DokumenPersilController extends Controller
             // ->filter($request, $filterableColumns)
             ->search($request, $searchableColumns)
             ->latest()
-            ->simplePaginate(10)
+            ->paginate(9)
             ->withQueryString();
 
         return view('pages.dokumen_persil.index', $data);
