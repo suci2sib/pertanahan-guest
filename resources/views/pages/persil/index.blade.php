@@ -35,8 +35,7 @@
                 @endif
 
                 <div class="text-center mb-5">
-                    <a href="{{ route('persil.create') }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow">
-                        <i class="lni lni-plus"></i> Tambah Persil Baru
+                    <a href="{{ route('persil.create') }}" class="btn btn-primary rounded-pill px-4 shadow"><i class="lni lni-plus"></i> Tambah Persil Baru
                     </a>
                 </div>
 
@@ -61,7 +60,7 @@
                                         {{-- Ambil gambar pertama sebagai cover --}}
                                         @php $firstImg = $p->attachments->first(); @endphp
                                         @if(str_contains($firstImg->mime_type, 'image'))
-                                            <img src="{{ asset('storage/uploads/persil/' . $firstImg->file_name) }}" 
+                                            <img src="{{ asset('storage/uploads/persil/' . $firstImg->file_name) }}"
                                                  alt="Cover" style="width: 100%; height: 100%; object-fit: cover;">
                                         @else
                                             {{-- Jika filenya PDF/Doc, tampilkan icon dokumen --}}
@@ -82,7 +81,7 @@
                                 <div class="p-4 text-center flex-grow-1">
                                     <h4 class="mb-2 fw-bold text-dark">{{ $p->kode_persil }}</h4>
                                     <p class="text-secondary small mb-3 badge bg-light text-dark border">{{ $p->penggunaan }}</p>
-                                    
+
                                     <div class="text-start px-2 mt-3">
                                         <div class="d-flex justify-content-between mb-2">
                                             <span class="text-muted small"><i class="lni lni-user me-1"></i> Pemilik</span>
@@ -140,8 +139,8 @@
                                                         <div class="col-md-6 col-12">
                                                             @if(str_contains($file->mime_type, 'image'))
                                                                 <div class="position-relative bg-black rounded p-1">
-                                                                    <img src="{{ asset('storage/uploads/persil/' . $file->file_name) }}" 
-                                                                         class="img-fluid rounded" 
+                                                                    <img src="{{ asset('storage/uploads/persil/' . $file->file_name) }}"
+                                                                         class="img-fluid rounded"
                                                                          style="max-height: 300px; object-fit: contain;"
                                                                          alt="{{ $file->caption }}">
                                                                     <div class="text-white small mt-2">{{ $file->caption }}</div>

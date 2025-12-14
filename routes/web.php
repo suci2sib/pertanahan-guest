@@ -7,6 +7,7 @@ use App\Http\Controllers\WargaController;
 use App\Http\Controllers\PersilController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PetaPersilController;
 use App\Http\Controllers\DokumenPersilController;
 use App\Http\Controllers\SengketaPersilController;
 use App\Http\Controllers\JenisPenggunaanController;
@@ -68,6 +69,10 @@ Route::middleware(['checkislogin'])->group(function () {
         //Sengketa Persil & Media
         Route::resource('sengketa_persil', SengketaPersilController::class);
         Route::delete('sengketa_persil/media/{id}', [SengketaPersilController::class, 'deleteMedia'])->name('sengketa_persil.deleteMedia');
+        //Peta Persil & Media
+        Route::resource('peta_persil', PetaPersilController::class);
+        Route::delete('peta_persil/media/{id}', [PetaPersilController::class, 'deleteMedia'])->name('peta_persil.deleteMedia');
+
 
     });
 

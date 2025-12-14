@@ -32,8 +32,7 @@
                 @endif
 
                 <div class="text-center mb-5">
-                    <a href="{{ route('dokumen_persil.create') }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow">
-                        <i class="lni lni-plus"></i> Tambah Dokumen Baru
+                    <a href="{{ route('dokumen_persil.create') }}" class="btn btn-primary rounded-pill px-4 shadow"><i class="lni lni-plus"></i> Tambah Dokumen Baru
                     </a>
                 </div>
 
