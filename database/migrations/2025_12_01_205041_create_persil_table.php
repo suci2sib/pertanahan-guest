@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('persil', function (Blueprint $table) {
         $table->id('persil_id');
         $table->string('kode_persil', 50)->unique();
-        
+
         $table->unsignedBigInteger('pemilik_warga_id');
         $table->foreign('pemilik_warga_id')
               ->references('warga_id')
@@ -22,11 +22,17 @@ return new class extends Migration
               ->onDelete('cascade');
 
         $table->decimal('luas_m2', 10, 2)->nullable();
-        $table->string('penggunaan', 100)->nullable();
+        $table->unsignedBigInteger('penggunaan_id');
+        $table->foreign('penggunaan_id')
+                ->references('jenis_id') // sesuaikan dengan kolom PK di tabel Jenis
+                ->on('jenispenggunaan')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         $table->string('alamat_lahan', 255)->nullable();
         $table->string('rt', 5)->nullable();
         $table->string('rw', 5)->nullable();
-        
+
         $table->timestamps();
     });
 }

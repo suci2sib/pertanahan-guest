@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Warga;
+use Faker\Factory as Faker;
+use App\Models\JenisPenggunaan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
-use App\Models\Warga;
 
 class CreatePersilDummy extends Seeder
 {
@@ -18,6 +19,7 @@ class CreatePersilDummy extends Seeder
 
         // Ambil semua warga_id untuk dijadikan pemilik acak
         $wargaIds = Warga::pluck('warga_id')->toArray();
+         $jenisIds = JenisPenggunaan::pluck('jenis_id')->toArray();
 
         // Pastikan ada data warga terlebih dahulu
         if (empty($wargaIds)) {
@@ -30,7 +32,7 @@ class CreatePersilDummy extends Seeder
                 'kode_persil'      => strtoupper('PRS-' . $faker->unique()->bothify('##??##')),
                 'pemilik_warga_id' => $faker->randomElement($wargaIds),
                 'luas_m2'          => $faker->numberBetween(100, 5000),
-                'penggunaan'       => $faker->randomElement(['Sawah', 'Kebun', 'Perumahan', 'Ruko', 'Lahan Kosong']),
+                'penggunaan_id'    => $faker->randomElement($jenisIds),
                 'alamat_lahan'     => $faker->address(),
                 'rt'               =>  strtoupper('00' . $faker->numberBetween(1, 10)),
                 'rw'               => strtoupper('00' . $faker->numberBetween(1, 5)),

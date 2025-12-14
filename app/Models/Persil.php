@@ -12,7 +12,7 @@ class Persil extends Model
         'kode_persil',
         'pemilik_warga_id',
         'luas_m2',
-        'penggunaan',
+        'penggunaan_id',
         'alamat_lahan',
         'rt',
         'rw',
@@ -21,6 +21,11 @@ class Persil extends Model
     public function warga()
     {
         return $this->belongsTo(Warga::class, 'pemilik_warga_id', 'warga_id');
+    }
+
+    public function jenis()
+    {
+        return $this->belongsTo(JenisPenggunaan::class, 'penggunaan_id', 'jenis_id');
     }
 
     public function scopeSearch($query, $request, array $columns)

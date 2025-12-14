@@ -11,7 +11,7 @@
                         <h5 class="mb-0 text-white">Tambah Data Persil</h5>
                     </div>
                     <div class="card-body p-4">
-                        
+
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul class="mb-0">
@@ -24,7 +24,7 @@
 
                         <form action="{{ route('persil.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            
+
                             {{-- Form Fields --}}
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -50,8 +50,15 @@
                                     <input type="number" step="0.01" name="luas_m2" class="form-control" value="{{ old('luas_m2') }}" placeholder="0" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label fw-bold">Penggunaan Lahan <span class="text-danger">*</span></label>
-                                    <input type="text" name="penggunaan" class="form-control" value="{{ old('penggunaan') }}" placeholder="Contoh: Sawah, Kebun, Rumah" required>
+                                    <label class="form-label fw-bold">Penggunaan (Jenis) <span class="text-danger">*</span></label>
+                                    <select name="pemilik_warga_id" class="form-select" required>
+                                        <option value="">-- Pilih Penggunaan --</option>
+                                        @foreach($dataJenis as $j)
+                                            <option value="{{ $j->jenis_id }}" {{ old('penggunaan_id') == $j->jenis_id ? 'selected' : '' }}>
+                                                {{ $j->nama_penggunaan }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
@@ -80,7 +87,7 @@
                                     <i class="lni lni-info-alt"></i> Bisa pilih banyak file sekaligus. Format: JPG, PNG, PDF.
                                 </div>
                                 <input type="file" name="files[]" id="file-input" class="form-control" multiple accept="image/*,.pdf">
-                                
+
                                 {{-- PREVIEW CONTAINER --}}
                                 <div class="mt-3">
                                     <label class="small text-muted mb-2 fw-bold">Preview:</label>
@@ -110,9 +117,9 @@
     document.getElementById('file-input').addEventListener('change', function(event) {
         const previewContainer = document.getElementById('image-preview');
         const placeholder = document.getElementById('placeholder-preview');
-        
+
         // Reset preview
-        previewContainer.innerHTML = ''; 
+        previewContainer.innerHTML = '';
 
         if (this.files.length > 0) {
             Array.from(this.files).forEach(file => {

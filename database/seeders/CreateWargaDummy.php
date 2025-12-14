@@ -1,9 +1,11 @@
 <?php
+
 namespace Database\Seeders;
 
-use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CreateWargaDummy extends Seeder
 {
@@ -12,9 +14,7 @@ class CreateWargaDummy extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create('id_ID');
-        
-        $this->command->info('📊 Membuat 100 warga dummy...');
+         $faker = Faker::create('id_ID');
 
         for ($i = 0; $i < 100; $i++) {
             DB::table('warga')->insert([
@@ -25,11 +25,7 @@ class CreateWargaDummy extends Seeder
                 'pekerjaan'     => $faker->jobTitle(),
                 'telp'          => $faker->phoneNumber(),
                 'email'         => $faker->unique()->safeEmail(),
-                'created_at'    => now(), // TAMBAH
-                'updated_at'    => now(), // TAMBAH
             ]);
         }
-        
-        $this->command->info('✅ 100 warga dummy berhasil dibuat!');
     }
 }

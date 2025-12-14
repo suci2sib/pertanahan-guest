@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Persil;
-use App\Models\Warga;
 use App\Models\Media;
+use App\Models\Warga;
+use App\Models\Persil;
 use Illuminate\Http\Request;
+use App\Models\JenisPenggunaan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth; // Tambahkan ini
 
@@ -43,6 +44,7 @@ class PersilController extends Controller
     public function create()
     {
         $data['dataWarga'] = Warga::all();
+        $data['dataJenis'] = JenisPenggunaan::all();
         return view('pages.persil.create', $data);
     }
 
@@ -52,7 +54,7 @@ class PersilController extends Controller
             'kode_persil'       => 'required|string|max:50|unique:persil,kode_persil',
             'pemilik_warga_id' => 'required|exists:warga,warga_id',
             'luas_m2'          => 'required|numeric|min:1',
-            'penggunaan'       => 'required|string|max:100',
+            'penggunaan_id'       => 'required|exists:jenispenggunaan,jenis_id',
             'alamat_lahan'     => 'required|string|max:255',
             'rt'               => 'nullable|string|max:5',
             'rw'               => 'nullable|string|max:5',
@@ -84,6 +86,7 @@ class PersilController extends Controller
     {
         $data['dataPersil'] = Persil::with('attachments')->findOrFail($id);
         $data['dataWarga']  = Warga::all();
+        $data['dataJenis'] = JenisPenggunaan::all();
         return view('pages.persil.edit', $data);
     }
 
@@ -95,7 +98,7 @@ class PersilController extends Controller
             'kode_persil'      => 'required|string|max:50|unique:persil,kode_persil,' . $persil->persil_id . ',persil_id',
             'pemilik_warga_id' => 'required|exists:warga,warga_id',
             'luas_m2'          => 'required|numeric|min:1',
-            'penggunaan'       => 'required|string|max:100',
+            'penggunaan_id'       => 'required|exists:jenispenggunaan,jenis_id',
             'alamat_lahan'     => 'required|string|max:255',
             'rt'               => 'nullable|string|max:5',
             'rw'               => 'nullable|string|max:5',
